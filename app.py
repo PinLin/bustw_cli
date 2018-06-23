@@ -44,7 +44,7 @@ def call_api(select):
     # 回傳所有路線資料
     return json.loads(response.text)['routes']
 
-def display(routes):
+def display(city, routes):
     # 選擇查看的路線
     select = 0
     if len(routes) > 1:
@@ -79,7 +79,7 @@ def display(routes):
     subRoute = subRoutes[select]
 
     # 顯示路線名稱
-    print("{0}".format(subRoute['subRouteName']))
+    print("（{0}）{1}".format(city, subRoute['subRouteName']))
     print("{0} <-> {1}".format(subRoute['stops'][0]['stopName'], subRoute['stops'][-1]['stopName']))
     # 顯示公車站與車子位置
     print("===================================================")
@@ -123,7 +123,7 @@ def display(routes):
 def main():
     choice = choose()
     routes = call_api(choice)
-    display(routes)
+    display(choice.split('/')[0], routes)
 
 if __name__ == '__main__':
     main()
