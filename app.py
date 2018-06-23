@@ -17,16 +17,20 @@ def choose():
         "InterCity/1815",
     ]
     # 提示訊息
-    print("您想要查詢哪個路線？")
+    print("想要查詢什麼路線？")
     # 顯示可查詢的路線
     for choice in choices:
         print("{0}. {1}".format(choices.index(choice) + 1, choice))
-    print()
+    print("\n（輸入序號或手動輸入其他路線）")
     # 接收使用者的輸入
-    select = int(input("> "))
+    select = input("> ")
     # 輸入完畢
     print()
-    return choices[select - 1]
+    try:
+        return choices[int(select) - 1]
+    except ValueError:
+        return select
+    
 
 # 向伺服器取得資料
 def call_api(select):
