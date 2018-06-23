@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from pprint import pprint
+import sys
 import json
 import requests
 
@@ -8,7 +8,7 @@ import requests
 def choose():
     # 可查詢的路線
     try:
-        with open('history.json', 'r') as f:
+        with open(sys.path[0] + '/history.json', 'r') as f:
             choices = json.load(f)
     except FileNotFoundError:
         choices = []
@@ -31,7 +31,7 @@ def choose():
         # 去除重複
         history = sorted(set(choices), key=choices.index)
         # 儲存
-        with open('history.json', 'w') as f:
+        with open(sys.path[0] + '/history.json', 'w') as f:
             json.dump(history, f, ensure_ascii=False, indent=4)
         # 回傳路線名稱
         return select
