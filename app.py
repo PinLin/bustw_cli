@@ -5,13 +5,7 @@ import json
 import requests
 
 # 讓使用者選擇要顯示的路線
-def choose():
-    # 可查詢的路線
-    try:
-        with open(sys.path[0] + '/history.json', 'r') as f:
-            choices = json.load(f)
-    except FileNotFoundError:
-        choices = []
+def choose(choices):
     # 提示訊息
     print("想要查詢什麼路線？（範例：Taipei/72）")
     # 顯示可查詢的路線
@@ -26,13 +20,6 @@ def choose():
         # 如果輸入清單序號就回傳路線名稱
         return choices[int(select) - 1]
     except ValueError:
-        # 如果手動指定路線名稱就加入清單內
-        choices.append(select)
-        # 去除重複
-        history = sorted(set(choices), key=choices.index)
-        # 儲存
-        with open(sys.path[0] + '/history.json', 'w') as f:
-            json.dump(history, f, ensure_ascii=False, indent=4)
         # 回傳路線名稱
         return select
     
@@ -121,12 +108,28 @@ def display(city, routes):
 
 
 def main():
+    # 曾經查詢過的路線
+    try:
+        f = open(sys.path[0] + '/history.json', 'r')
+        choices = json.load(f)
+        f.close()
+    except FileNotFoundError:
+        choices = []
     # 指定查詢的路線
-    choice = choose() if len(sys.argv) <= 1 else sys.argv[1]
+    choice = choose(choices) if len(sys.argv) <= 1 else sys.argv[1]
     # 取得資料
     routes = call_api(choice)
     # 顯示結果
     display(choice.split('/')[0], routes)
+
+    # 將路線名稱就加入清單內
+    choices.append(choice)
+    # 去除重複
+    history = sorted(set(choices), key=choices.index)
+    # 儲存到曾經查詢的路線中
+    f = open(sys.path[0] + '/history.json', 'w')
+    json.dump(history, f, ensure_ascii=False, indent=4)
+    f.close()
 
 if __name__ == '__main__':
     main()
