@@ -121,8 +121,11 @@ def display(city, routes):
 
 
 def main():
-    choice = choose()
+    # 指定查詢的路線
+    choice = choose() if len(sys.argv) <= 1 else sys.argv[1]
+    # 取得資料
     routes = call_api(choice)
+    # 顯示結果
     display(choice.split('/')[0], routes)
 
 if __name__ == '__main__':
