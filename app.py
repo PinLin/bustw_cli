@@ -7,28 +7,33 @@ import requests
 # 讓使用者選擇要顯示的路線
 def choose():
     # 可查詢的路線
-    choices = [
-        "Taipei/72",
-        "Taipei/680",
-        "Taipei/212夜",
-        "NewTaipei/953去",
-        "NewTaipei/953返",
-        "NewTaipei/953區",
-        "InterCity/1815",
-    ]
+    try:
+        with open('history.json', 'r') as f:
+            choices = json.load(f)
+    except FileNotFoundError:
+        choices = []
     # 提示訊息
-    print("想要查詢什麼路線？")
+    print("想要查詢什麼路線？（範例：Taipei/72）")
     # 顯示可查詢的路線
     for choice in choices:
         print("{0}. {1}".format(choices.index(choice) + 1, choice))
-    print("\n（輸入序號或手動輸入其他路線）")
+    print()
     # 接收使用者的輸入
     select = input("> ")
     # 輸入完畢
     print()
     try:
+        # 如果輸入清單序號就回傳路線名稱
         return choices[int(select) - 1]
     except ValueError:
+        # 如果手動指定路線名稱就加入清單內
+        choices.append(select)
+        # 去除重複
+        history = sorted(set(choices), key=choices.index)
+        # 儲存
+        with open('history.json', 'w') as f:
+            json.dump(history, f, ensure_ascii=False, indent=4)
+        # 回傳路線名稱
         return select
     
 
