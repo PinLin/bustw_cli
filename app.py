@@ -117,10 +117,10 @@ def main():
     # 引數
     if len(sys.argv) > 1 and sys.argv[1] == '-h':
         help()
-        return
+        exit(0)
     if len(sys.argv) > 1 and sys.argv[1] == '--help':
         help()
-        return
+        exit(0)
     
     # 曾經查詢過的路線
     try:
@@ -129,12 +129,16 @@ def main():
         f.close()
     except FileNotFoundError:
         choices = []
-    # 指定查詢的路線
-    choice = choose(choices) if len(sys.argv) <= 1 else sys.argv[1]
-    # 取得資料
-    routes = call_api(choice)
-    # 顯示結果
-    display(choice.split('/')[0], routes)
+
+    try:
+        # 指定查詢的路線
+        choice = choose(choices) if len(sys.argv) <= 1 else sys.argv[1]
+        # 取得資料
+        routes = call_api(choice)
+        # 顯示結果
+        display(choice.split('/')[0], routes)
+    except EOFError:
+        exit(1)
 
     # 將路線名稱就加入清單內
     choices.append(choice)
