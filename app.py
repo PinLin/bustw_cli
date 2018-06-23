@@ -106,8 +106,22 @@ def display(city, routes):
         else:
             print()
 
+def help():
+    print("bustw - 一個 CLI 的查公車工具\n"
+          "用法：\n"
+          "\n"
+          "bustw [<City>/<RouteName>]  - 查詢公車\n"
+          "bustw -h, --help            - 顯示此幫助\n")
 
 def main():
+    # 引數
+    if len(sys.argv) > 1 and sys.argv[1] == '-h':
+        help()
+        return
+    if len(sys.argv) > 1 and sys.argv[1] == '--help':
+        help()
+        return
+    
     # 曾經查詢過的路線
     try:
         f = open(sys.path[0] + '/history.json', 'r')
