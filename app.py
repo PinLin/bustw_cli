@@ -56,7 +56,7 @@ def display(city, routes):
         print("哪一個子路線？")
         # 顯示查詢到的所有路線
         for subRoute in subRoutes:
-            print("{0}. {1}（往{2}）".format(subRoutes.index(subRoute) + 1, subRoute['subRouteName'], subRoute['stops'][-1]['stopName']))
+            print("{0}. {1}".format(subRoutes.index(subRoute) + 1, subRoute['subRouteName']))
         print()
         # 接收使用者的輸入
         select = int(input("> ")) - 1
