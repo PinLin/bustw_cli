@@ -5,6 +5,8 @@ import json
 import requests
 
 # 讓使用者選擇要顯示的路線
+
+
 def choose(choices):
     # 提示訊息
     print("想要查詢什麼路線？（範例：Taipei/72）")
@@ -22,7 +24,7 @@ def choose(choices):
     except ValueError:
         # 回傳路線名稱
         return select
-    
+
 
 # 向伺服器取得資料
 def call_api(select):
@@ -30,6 +32,7 @@ def call_api(select):
     response = requests.get("https://bus.ntut.com.tw/v1/stop/" + select)
     # 回傳所有路線資料
     return json.loads(response.text)['routes']
+
 
 def display(city, routes):
     # 選擇查看的路線
@@ -39,13 +42,14 @@ def display(city, routes):
         print("哪一個才是您想要的路線？")
         # 顯示查詢到的所有路線
         for route in routes:
-            print("{0}. {1}".format(routes.index(route) + 1, route['routeName']))
+            print("{0}. {1}".format(routes.index(
+                route) + 1, route['routeName']))
         print()
         # 接收使用者的輸入
         select = int(input("> ")) - 1
         # 輸入完畢
         print()
-    
+
     # 使用者想要查看的路線的子路線們
     subRoutes = routes[select]['subRoutes']
 
@@ -56,7 +60,8 @@ def display(city, routes):
         print("哪一個子路線？")
         # 顯示查詢到的所有路線
         for subRoute in subRoutes:
-            print("{0}. {1}".format(subRoutes.index(subRoute) + 1, subRoute['subRouteName']))
+            print("{0}. {1}".format(subRoutes.index(
+                subRoute) + 1, subRoute['subRouteName']))
         print()
         # 接收使用者的輸入
         select = int(input("> ")) - 1
@@ -67,7 +72,8 @@ def display(city, routes):
 
     # 顯示路線名稱
     print("（{0}）{1}".format(city, subRoute['subRouteName']))
-    print("{0} <-> {1}".format(subRoute['stops'][0]['stopName'], subRoute['stops'][-1]['stopName']))
+    print("{0} <-> {1}".format(subRoute['stops'][0]
+                               ['stopName'], subRoute['stops'][-1]['stopName']))
     # 顯示公車站與車子位置
     print("===================================================")
     for stop in subRoute['stops']:
@@ -97,7 +103,7 @@ def display(city, routes):
         for char in stop['stopName']:
             length += 2 if ord(char) > 127 else 1
         # 顯示公車站名稱
-        print(stop['stopName'] + ' ' * (30 -length), end='')
+        print(stop['stopName'] + ' ' * (30 - length), end='')
         # 如果有車的話顯示車號
         if len(stop['buses']) > 0:
             for bus in stop['buses']:
@@ -106,12 +112,14 @@ def display(city, routes):
         else:
             print()
 
+
 def help():
     print("bustw - 一個 CLI 的查公車工具\n"
           "用法：\n"
           "\n"
           "bustw [<City>/<RouteName>]  - 查詢公車\n"
           "bustw -h, --help            - 顯示此幫助\n")
+
 
 def main():
     # 引數
@@ -121,7 +129,7 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--help':
         help()
         exit(0)
-    
+
     # 曾經查詢過的路線
     try:
         f = open(sys.path[0] + '/history.json', 'r')
@@ -148,6 +156,7 @@ def main():
     f = open(sys.path[0] + '/history.json', 'w')
     json.dump(history, f, ensure_ascii=False, indent=4)
     f.close()
+
 
 if __name__ == '__main__':
     main()
