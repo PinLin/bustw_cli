@@ -2,7 +2,11 @@
 bus tracker for Taiwanese CLI version
 
 ## Demo
-![demo](https://i.imgur.com/GsGHfgi.png)
+![demo](https://imgur.com/fzu6uG3.png)
+
+## Require
+- Python 3
+    - requests
 
 ## Install
 ```bash
