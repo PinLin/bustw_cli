@@ -79,36 +79,41 @@ def display(city, routes):
     for stop in subRoute['stops']:
         # 未發車
         if stop['stopStatus'] == 1:
-            print("[ 未發車 ] ", end='')
+            print("\033[47m\033[30m[ 未發車 ]\033[0m ", end='')
         # 交管不停
         elif stop['stopStatus'] == 2:
-            print("[交管不停] ", end='')
+            print("\033[43m\033[30m[交管不停]\033[0m ", end='')
         # 末班駛離
         elif stop['stopStatus'] == 3:
-            print("[末班駛離] ", end='')
+            print("\033[47m\033[30m[末班駛離]\033[0m ", end='')
         # 今日不開
         elif stop['stopStatus'] == 4:
-            print("[今日不開] ", end='')
+            print("\033[47m\033[30m[今日不開]\033[0m ", end='')
         # 有車
         else:
             # 有車且進站中
             if len(stop['buses']) > 0 and 1 in list(map(lambda x: x['arriving'], stop['buses'])):
-                print("[ 進站中 ] ", end='')
+                print("\033[41m\033[97m[ 進站中 ]\033[0m ", end='')
             # 有車還沒進站
             else:
                 minute, _ = divmod(stop['estimateTime'], 60)
-                print("[ {0: >3} 分 ] ".format(minute), end='')
+                if minute > 2:
+                    print("\033[44m\033[97m[ {0: >3} 分 ]\033[0m ".format(minute), end='')
+                else:
+                    print("\033[45m\033[97m[ {0: >3} 分 ]\033[0m ".format(minute), end='')
         # 分析站名有多寬
         length = 0
         for char in stop['stopName']:
             length += 2 if ord(char) > 127 else 1
-        # 顯示公車站名稱
-        print(stop['stopName'] + ' ' * (30 - length), end='')
+        # 顯示公車站名稱（最多 30 字）
+        print(stop['stopName'][:30] + ' ' * (30 - length), end='')
         # 如果有車的話顯示車號
         if len(stop['buses']) > 0:
             for bus in stop['buses']:
-                print(bus['busNumber'], end=' ')
-            print()
+                # 有多台車就換行
+                if stop['buses'].index(bus) != 0:
+                    print(" " * 41, end='')
+                print(bus['busNumber'])
         else:
             print()
 
