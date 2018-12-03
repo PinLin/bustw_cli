@@ -5,12 +5,14 @@ class App:
     def __init__(self):
         self.__views = {}
 
-    def view(self, func, *args, **kwargs):
+    def view(self, name: str):
         """註冊顯示介面"""
 
-        self.__views[func.__name__] = func
-
-        return func
+        def decorator(func, *args, **kwargs):
+            # 將函式新增至介面 dict 中
+            self.__views[name] = func
+            return func
+        return decorator
 
     def run(self):
         """程式開始執行"""
