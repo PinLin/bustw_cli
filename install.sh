@@ -153,7 +153,7 @@ main() {
         do
             if [ -f "$HOME/$rc" -o $rc = ".bashrc" ]
             then
-                echo "\nalias ${ALIAS_NAME}='~/.${ALIAS_NAME}/app.py'" >> $HOME/$rc
+                echo "\nalias ${ALIAS_NAME}='~/.${ALIAS_NAME}/run.py'" >> $HOME/$rc
             fi
         done
     fi
