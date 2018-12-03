@@ -1,29 +1,20 @@
 #!/usr/bin/env python3
 
 import sys
-import json
 import requests
 
 # 讓使用者選擇要顯示的路線
 
 
-def choose(choices):
+def choose():
     # 提示訊息
     print("想要查詢什麼路線？（範例：Taipei/72）")
-    # 顯示可查詢的路線
-    for choice in choices:
-        print("{0}. {1}".format(choices.index(choice) + 1, choice))
-    print()
     # 接收使用者的輸入
     select = input("> ")
     # 輸入完畢
     print()
-    try:
-        # 如果輸入清單序號就回傳路線名稱
-        return choices[int(select) - 1]
-    except ValueError:
-        # 回傳路線名稱
-        return select
+    # 回傳路線名稱
+    return select
 
 
 # 向伺服器取得資料
@@ -31,7 +22,7 @@ def call_api(select):
     # 向伺服器發出請求
     response = requests.get('https://bus.ntut.com.tw/v1/stop/' + select)
     # 回傳所有路線資料
-    return json.loads(response.text)['routes']
+    return response.json()['routes']
 
 
 def display(city, routes):
@@ -98,9 +89,11 @@ def display(city, routes):
             else:
                 minute, _ = divmod(stop['estimateTime'], 60)
                 if minute > 2:
-                    print("\033[44m\033[97m[ {0: >3} 分 ]\033[0m ".format(minute), end='')
+                    print("\033[44m\033[97m[ {0: >3} 分 ]\033[0m ".format(
+                        minute), end='')
                 else:
-                    print("\033[45m\033[97m[ {0: >3} 分 ]\033[0m ".format(minute), end='')
+                    print("\033[45m\033[97m[ {0: >3} 分 ]\033[0m ".format(
+                        minute), end='')
         # 分析站名有多寬
         length = 0
         for char in stop['stopName']:
@@ -119,32 +112,15 @@ def display(city, routes):
 
 
 def main():
-    # 曾經查詢過的路線
-    try:
-        f = open(sys.path[0] + '/history.json', 'r')
-        choices = json.load(f)
-        f.close()
-    except FileNotFoundError:
-        choices = []
-
     try:
         # 指定查詢的路線
-        choice = choose(choices) if len(sys.argv) <= 1 else sys.argv[1]
+        choice = choose() if len(sys.argv) <= 1 else sys.argv[1]
         # 取得資料
         routes = call_api(choice)
         # 顯示結果
         display(choice.split('/')[0], routes)
     except EOFError:
         exit(1)
-
-    # 將路線名稱就加入清單內
-    choices.append(choice)
-    # 去除重複
-    history = sorted(set(choices), key=choices.index)
-    # 儲存到曾經查詢的路線中
-    f = open(sys.path[0] + '/history.json', 'w')
-    json.dump(history, f, ensure_ascii=False, indent=4)
-    f.close()
 
 
 if __name__ == '__main__':
