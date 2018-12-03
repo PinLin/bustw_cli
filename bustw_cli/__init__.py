@@ -17,7 +17,10 @@ def old_choose():
 
 @app.view('old_call_api')
 def old_call_api(select):
-    return bustw.old_call_api(select)
+    """向伺服器取得資料"""
+
+    city, route = select.split('/')
+    return bustw.fetch('/stop/{city}/{route}', city=city, route=route)['routes']
 
 
 @app.view('old_display')

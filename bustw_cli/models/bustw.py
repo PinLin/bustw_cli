@@ -5,13 +5,10 @@ class Bustw:
     def __init__(self, url: str):
         self.__url = url
 
-    def old_call_api(self, select):
-        """向伺服器取得資料"""
+    def fetch(self, url: str, **kwargs):
+        """從伺服器取得資料"""
 
-        # 向伺服器發出請求
-        response = requests.get(self.__url + '/stop/' + str(select))
-        # 回傳所有路線資料]
-        return response.json()['routes']
+        return requests.get(self.__url + url.format(**kwargs)).json()
 
     def old_display(self, city, routes):
         """選擇查看的路線"""
