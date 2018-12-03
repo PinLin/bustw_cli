@@ -19,3 +19,9 @@ sh -c "$(curl -L https://raw.githubusercontent.com/PinLin/bustw_cli/master/insta
 # Install by `wget`
 sh -c "$(wget -O- https://raw.githubusercontent.com/PinLin/bustw_cli/master/install.sh)"
 ```
+
+## License
+GPLv3
+
+## Source
+[![公共運輸整合資訊流通服務平臺（Public Transport data eXchange, PTX）](https://imgur.com/wp2gOeU.png)](http://ptx.transportdata.tw/PTX)
