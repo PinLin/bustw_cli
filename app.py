@@ -29,7 +29,7 @@ def choose(choices):
 # 向伺服器取得資料
 def call_api(select):
     # 向伺服器發出請求
-    response = requests.get("https://bus.ntut.com.tw/v1/stop/" + select)
+    response = requests.get('https://bus.ntut.com.tw/v1/stop/' + select)
     # 回傳所有路線資料
     return json.loads(response.text)['routes']
 
