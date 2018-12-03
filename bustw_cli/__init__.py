@@ -5,16 +5,16 @@ bustw = Bustw('https://bus.ntut.com.tw/v1')
 app = App()
 
 
-@app.view('choose')
-def choose():
-    return bustw.choose()
+@app.view('old_choose')
+def old_choose():
+    return bustw.old_choose()
 
 
-@app.view('call_api')
-def call_api(select):
-    return bustw.call_api(select)
+@app.view('old_call_api')
+def old_call_api(select):
+    return bustw.old_call_api(select)
 
 
-@app.view('display')
-def display(city, route):
-    bustw.display(city, route)
+@app.view('old_display')
+def old_display(city, route):
+    bustw.old_display(city, route)

@@ -5,7 +5,7 @@ class Bustw:
     def __init__(self, url: str):
         self.__url = url
 
-    def choose(self):
+    def old_choose(self):
         """讓使用者選擇要顯示的路線"""
 
         # 提示訊息
@@ -17,7 +17,7 @@ class Bustw:
         # 回傳路線名稱
         return select
 
-    def call_api(self, select):
+    def old_call_api(self, select):
         """向伺服器取得資料"""
 
         # 向伺服器發出請求
@@ -25,7 +25,7 @@ class Bustw:
         # 回傳所有路線資料]
         return response.json()['routes']
 
-    def display(self, city, routes):
+    def old_display(self, city, routes):
         """選擇查看的路線"""
 
         select = 0

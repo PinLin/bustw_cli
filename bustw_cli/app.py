@@ -18,8 +18,8 @@ class App:
         """程式開始執行"""
 
         # 指定查詢的路線
-        choice = self.__views['choose']()
+        choice = self.__views['old_choose']()
         # 取得資料
-        routes = self.__views['call_api'](choice)
+        routes = self.__views['old_call_api'](choice)
         # 顯示結果
-        self.__views['display'](choice.split('/')[0], routes)
+        self.__views['old_display'](choice.split('/')[0], routes)
