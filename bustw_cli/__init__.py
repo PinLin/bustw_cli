@@ -9,13 +9,9 @@ app = App()
 def old_choose():
     """讓使用者選擇要顯示的路線"""
 
-    # 提示訊息
     print("想要查詢什麼路線？（範例：Taipei/72）")
-    # 接收使用者的輸入
     select = input("> ")
-    # 輸入完畢
     print()
-    # 回傳路線名稱
     return select
 
 
