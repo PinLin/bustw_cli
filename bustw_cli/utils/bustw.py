@@ -6,7 +6,7 @@ class Bustw:
         self.__url = 'https://bus.ntut.com.tw/v1'
 
     def __fetch(self, url: str, ver: int, **kwargs):
-        url = self.__url + url + '?ver={ver}'.format(ver=ver) if ver else ''
+        url = self.__url + url + ('?ver={ver}'.format(ver=ver) if ver else '')
         url = url.format(**kwargs)
 
         return requests.get(url).json()
