@@ -1,7 +1,7 @@
 from .utils.bustw import Bustw
 from .app import App
 
-bustw = Bustw('https://bus.ntut.com.tw/v1')
+bustw = Bustw()
 app = App()
 
 @app.view('init')
