@@ -1,6 +1,3 @@
-from .models import bustw
-
-
 class App:
     def __init__(self):
         self.__views = {}
