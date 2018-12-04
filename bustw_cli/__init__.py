@@ -24,7 +24,7 @@ def old_call_api(select):
     """向伺服器取得資料"""
 
     city, route = select.split('/')
-    return bustw.fetch('/stop/{city}/{route}', city=city, route=route)['routes']
+    return bustw.get_stop(city=city, route=route)['routes']
 
 
 @app.view('old_display')
@@ -68,7 +68,7 @@ def old_display(city, routes):
     # 顯示路線名稱
     print("（{0}）{1}".format(city, subRoute['subRouteName']))
     print("{0} <-> {1}".format(subRoute['stops'][0]
-                                   ['stopName'], subRoute['stops'][-1]['stopName']))
+                               ['stopName'], subRoute['stops'][-1]['stopName']))
     # 顯示公車站與車子位置
     print("===================================================")
     for stop in subRoute['stops']:
@@ -113,4 +113,3 @@ def old_display(city, routes):
                 print(bus['busNumber'])
         else:
             print()
-

@@ -30,8 +30,3 @@ class Bustw:
     def get_time(self, city: str, route: str='', ver: int=None):
         """從伺服器取得路線時間資料"""
         return self.__fetch('/time/{city}/{route}', ver, city=city, route=route)
-
-    def fetch(self, url: str, **kwargs):
-        """從伺服器取得資料"""
-
-        return requests.get(self.__url + url.format(**kwargs)).json()
