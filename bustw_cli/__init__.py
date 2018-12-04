@@ -4,6 +4,10 @@ from .app import App
 bustw = Bustw('https://bus.ntut.com.tw/v1')
 app = App()
 
+@app.view('init')
+def init():
+    from .init import main
+    main()
 
 @app.view('old_choose')
 def old_choose():

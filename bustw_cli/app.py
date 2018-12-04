@@ -17,6 +17,9 @@ class App:
     def run(self):
         """程式開始執行"""
 
+        # 初始化
+        self.__views['init']()
+
         # 指定查詢的路線
         choice = self.__views['old_choose']()
         # 取得資料
