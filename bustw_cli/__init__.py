@@ -4,32 +4,32 @@ from .app import App
 bustw = Bustw()
 app = App()
 
+
 @app.view('init')
-def init():
+def init(data):
     from .init import main
-    main()
+    return main(data)
+
 
 @app.view('old_choose')
-def old_choose():
+def old_choose(data):
     """讓使用者選擇要顯示的路線"""
 
     print("想要查詢什麼路線？（範例：Taipei/72）")
     select = input("> ")
     print()
-    return select
-
-
-@app.view('old_call_api')
-def old_call_api(select):
-    """向伺服器取得資料"""
-
-    city, route = select.split('/')
-    return bustw.get_stop(city=city, route=route)['routes']
+    data['old'] = select
+    return 'old_display'
 
 
 @app.view('old_display')
-def old_display(city, routes):
+def old_display(data):
     """選擇查看的路線"""
+
+    select = data['old']
+    city, route_name = select.split('/')
+    
+    routes = bustw.get_stop(city=city, route=route_name)['routes']
 
     select = 0
     if len(routes) > 1:
@@ -113,3 +113,5 @@ def old_display(city, routes):
                 print(bus['busNumber'])
         else:
             print()
+
+    return 'old_choose'

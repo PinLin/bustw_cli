@@ -14,12 +14,10 @@ class App:
     def run(self):
         """程式開始執行"""
 
-        # 初始化
-        self.__views['init']()
+        # 共享資料
+        data = {}
 
-        # 指定查詢的路線
-        choice = self.__views['old_choose']()
-        # 取得資料
-        routes = self.__views['old_call_api'](choice)
-        # 顯示結果
-        self.__views['old_display'](choice.split('/')[0], routes)
+        # 功能跳轉
+        func = 'init'
+        while True:
+            func = self.__views[func](data)
