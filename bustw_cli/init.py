@@ -12,6 +12,7 @@ class Init:
 
         cities = self.__data['cities']
 
+        print("正在下載城市清單...")
         for item in bustw.get_city():
             cities[item['key']] = {
                 'name': item['name'],
@@ -23,6 +24,7 @@ class Init:
 
         cities = self.__data['cities']
 
+        print()
         while True:
             for index, value in enumerate(cities.values()):
                 print('{index}.{space}{city}\t{status}'.format(
@@ -46,10 +48,12 @@ class Init:
         cities = self.__data['cities']
         routes = self.__data['routes']
 
+        print()
         for city in cities:
             if not cities[city]['enable']:
                 continue
 
+            print("正在下載{city}的路線基本資料...".format(city=cities[city]['name']))
             routes[city] = bustw.get_info(city)
 
     def main(self):
