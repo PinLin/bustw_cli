@@ -10,8 +10,10 @@ class Init:
     def load_cities(self):
         """讀取城市資料"""
 
+        cities = self.__data['cities']
+
         for item in bustw.get_city():
-            self.__data['cities'][item['key']] = {
+            cities[item['key']] = {
                 'name': item['name'],
                 'enable': True,
             }
