@@ -1,7 +1,6 @@
 from .utils.bustw import Bustw
 from .app import App
 
-bustw = Bustw()
 app = App()
 
 
@@ -28,8 +27,8 @@ def old_display(data):
 
     select = data['old']
     city, route_name = select.split('/')
-    
-    routes = bustw.get_stop(city=city, route=route_name)['routes']
+
+    routes = Bustw().get_stop(city=city, route=route_name)['routes']
 
     select = 0
     if len(routes) > 1:
