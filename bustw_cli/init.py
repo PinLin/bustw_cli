@@ -40,10 +40,24 @@ class Init:
             except Exception:
                 break
 
+    def download_routes(self):
+        """下載"""
+
+        cities = self.__data['cities']
+        routes = self.__data['routes']
+
+        for city in cities:
+            if not cities[city]['enable']:
+                continue
+
+            routes[city] = bustw.get_info(city)
+
     def main(self):
         self.__data['cities'] = {}
+        self.__data['routes'] = {}
 
         self.load_cities()
         self.select_cities()
+        self.download_routes()
 
         return 'old_choose'
