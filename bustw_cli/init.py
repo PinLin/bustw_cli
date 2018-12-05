@@ -15,7 +15,7 @@ class Init:
         for item in bustw.get_city():
             cities[item['key']] = {
                 'name': item['name'],
-                'enable': True,
+                'enable': False,
             }
 
     def select_cities(self):
