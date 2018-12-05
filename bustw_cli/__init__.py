@@ -6,8 +6,8 @@ app = App()
 
 @app.view('init')
 def init(data):
-    from .init import main
-    return main(data)
+    from .init import Init
+    return Init(data).main()
 
 
 @app.view('old_choose')
