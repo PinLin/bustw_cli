@@ -33,7 +33,7 @@ class Init:
                     city=value['name'],
                     status=("\033[0;32m　檢索\033[0m" if value['enable'] else "\033[0;31m不檢索\033[0m")))
 
-            print("選擇城市以更改檢索狀態，或按下 Enter 繼續")
+            print("選擇城市以更改檢索狀態，或直接按下 Enter 以繼續")
             try:
                 select = int(input("(bustw)? ")) - 1
                 key = list(cities.keys())[select]
@@ -43,7 +43,7 @@ class Init:
                 break
 
     def download_routes(self):
-        """下載"""
+        """下載路線基本資料"""
 
         cities = self.__data['cities']
         routes = self.__data['routes']
