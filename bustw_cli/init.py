@@ -39,6 +39,10 @@ class Init:
                 key = list(cities.keys())[select]
                 cities[key]['enable'] = not cities[key]['enable']
                 print("\n" * 10)
+
+            except EOFError as e:
+                raise e
+
             except Exception:
                 break
 
