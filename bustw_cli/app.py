@@ -18,12 +18,13 @@ class App:
         """程式開始執行"""
 
         # 讀取外部參數
-        args = sys.argv.copy()
-        args.pop(0)
+        choice = sys.argv.copy()
+        choice.pop(0)
 
         # 共享資料
         data = {
-            'args': args,
+            'args': sys.argv,
+            'choice': choice,
             'prompt': "(bustw)> ",
         }
 

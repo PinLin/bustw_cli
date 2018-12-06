@@ -32,7 +32,7 @@ def lookup(data):
 def old_display(data):
     """選擇查看的路線"""
 
-    select = data['args'][0]
+    select = data['choice'][0]
     city, route_name = select.split('/')
 
     routes = Bustw().get_stop(city=city, route=route_name)['routes']
