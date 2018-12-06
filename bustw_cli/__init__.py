@@ -10,6 +10,12 @@ def init(data):
     return Init(data).main()
 
 
+@app.view('main')
+def main(data):
+    from .main import Main
+    return Main(data).main()
+
+
 @app.view('old_choose')
 def old_choose(data):
     """讓使用者選擇要顯示的路線"""

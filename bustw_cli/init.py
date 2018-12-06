@@ -64,4 +64,4 @@ class Init:
         self.select_cities()
         self.download_routes()
 
-        return 'old_choose'
+        return 'main'
