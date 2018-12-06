@@ -8,4 +8,6 @@ class Lookup:
         self.__data = data
 
     def main(self):
-        return 'old_display'
+        # TODO: 移除此區塊
+        self.__data['choice'] = []
+        return 'main'
