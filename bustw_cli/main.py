@@ -7,7 +7,9 @@ class Main:
     def __init__(self, data: dict):
         self.__data = data
 
-    def choose(self):
+    def search(self):
+        """設定要搜尋的路線"""
+
         choice = self.__data['choice']
 
         if len(choice) < 1 or not choice[0]:
@@ -22,7 +24,7 @@ class Main:
                 choice.append(select)
 
     def main(self):
-        self.choose()
+        self.search()
 
         if self.__data['choice'][0] == '':
             return 'setting'
