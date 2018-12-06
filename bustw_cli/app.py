@@ -1,5 +1,6 @@
 import sys
 
+
 class App:
     def __init__(self):
         self.__views = {}
@@ -26,10 +27,15 @@ class App:
             'prompt': "(bustw)> ",
         }
 
-        # 功能跳轉
-        func = 'init'
-        while True:
-            if func == 'exit':
-                break
+        try:
+            # 功能跳轉
+            func = 'init'
+            while True:
+                if func == 'exit':
+                    break
 
-            func = self.__views[func](data)
+                func = self.__views[func](data)
+
+        except EOFError:
+            print()
+            print("Bye!")
