@@ -1,3 +1,5 @@
+import sys
+
 class App:
     def __init__(self):
         self.__views = {}
@@ -14,9 +16,13 @@ class App:
     def run(self):
         """程式開始執行"""
 
+        # 讀取外部參數
+        args = sys.argv.copy()
+        args.pop(0)
+
         # 共享資料
         data = {
-            'args': [],
+            'args': args,
             'prompt': "(bustw)> ",
         }
 

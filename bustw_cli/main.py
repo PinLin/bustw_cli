@@ -10,10 +10,16 @@ class Main:
     def choose(self):
         args = self.__data['args']
 
-        print()
-        print("直接按下 Enter 以進入設定頁")
-        print("或是輸入想要查詢的路線（範例：72、680、幹線）")
-        args.append(input(self.__data['prompt']))
+        if len(args) < 1 or not args[0]:
+            print()
+            print("直接按下 Enter 以進入設定頁")
+            print("或是輸入想要查詢的路線（範例：72、680、幹線）")
+
+            select = input(self.__data['prompt'])
+            try:
+                args[0] = select
+            except IndexError:
+                args.append(select)
 
     def main(self):
         self.choose()
