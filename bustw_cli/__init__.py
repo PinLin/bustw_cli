@@ -16,6 +16,12 @@ def main(data):
     return Main(data).main()
 
 
+@app.view('setting')
+def setting(data):
+    from .setting import Setting
+    return Setting(data).main()
+
+
 @app.view('old_display')
 def old_display(data):
     """選擇查看的路線"""
