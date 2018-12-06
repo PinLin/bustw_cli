@@ -16,10 +16,14 @@ class App:
 
         # 共享資料
         data = {
-            'prompt': "(bustw)> "
+            'args': [],
+            'prompt': "(bustw)> ",
         }
 
         # 功能跳轉
         func = 'init'
         while True:
+            if func == 'exit':
+                break
+
             func = self.__views[func](data)

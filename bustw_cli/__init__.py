@@ -16,22 +16,11 @@ def main(data):
     return Main(data).main()
 
 
-@app.view('old_choose')
-def old_choose(data):
-    """讓使用者選擇要顯示的路線"""
-
-    print("想要查詢什麼路線？（範例：Taipei/72）")
-    select = input("> ")
-    print()
-    data['old'] = select
-    return 'old_display'
-
-
 @app.view('old_display')
 def old_display(data):
     """選擇查看的路線"""
 
-    select = data['old']
+    select = data['args'][0]
     city, route_name = select.split('/')
 
     routes = Bustw().get_stop(city=city, route=route_name)['routes']
@@ -119,4 +108,4 @@ def old_display(data):
         else:
             print()
 
-    return 'old_choose'
+    return 'exit'

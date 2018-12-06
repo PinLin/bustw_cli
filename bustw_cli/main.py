@@ -8,8 +8,7 @@ class Main:
         self.__data = data
 
     def choose(self):
-        args = []
-        self.__data['args'] = args
+        args = self.__data['args']
 
         print()
         print("直接按下 Enter 以進入設定頁")
@@ -17,10 +16,9 @@ class Main:
         args.append(input(self.__data['prompt']))
 
     def main(self):
-        if not self.__data.get('args'):
-            self.choose()
+        self.choose()
 
         if self.__data['args'][0] == '':
             return 'setting'
 
-        return 'old_choose'
+        return 'old_display'
