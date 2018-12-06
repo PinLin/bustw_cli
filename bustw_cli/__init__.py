@@ -22,6 +22,12 @@ def setting(data):
     return Setting(data).main()
 
 
+@app.view('lookup')
+def lookup(data):
+    from .lookup import Lookup
+    return Lookup(data).main()
+
+
 @app.view('old_display')
 def old_display(data):
     """選擇查看的路線"""

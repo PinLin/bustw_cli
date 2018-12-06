@@ -21,4 +21,4 @@ class Main:
         if self.__data['args'][0] == '':
             return 'setting'
 
-        return 'old_display'
+        return 'lookup'
