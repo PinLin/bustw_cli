@@ -14,7 +14,7 @@ class Main:
         print()
         print("直接按下 Enter 以進入設定頁")
         print("或是輸入想要查詢的路線（範例：72、680、幹線）")
-        args.append(input("(bustw)? "))
+        args.append(input(self.__data['prompt']))
 
     def main(self):
         if not self.__data.get('args'):

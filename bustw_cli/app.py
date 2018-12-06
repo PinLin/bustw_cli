@@ -15,7 +15,9 @@ class App:
         """程式開始執行"""
 
         # 共享資料
-        data = {}
+        data = {
+            'prompt': "(bustw)> "
+        }
 
         # 功能跳轉
         func = 'init'

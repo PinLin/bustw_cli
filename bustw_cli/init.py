@@ -35,7 +35,7 @@ class Init:
 
             print("選擇城市以更改檢索狀態，或直接按下 Enter 以繼續")
             try:
-                select = int(input("(bustw)? ")) - 1
+                select = int(input(self.__data['prompt'])) - 1
                 key = list(cities.keys())[select]
                 cities[key]['enable'] = not cities[key]['enable']
                 print("\n" * 10)
