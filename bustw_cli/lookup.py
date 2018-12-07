@@ -30,30 +30,48 @@ class Lookup:
         choice = self.__data['choice']
         picked = self.__picked
 
-        if len(choice) < 2 or not choice[1]:
+        if len(picked) == 0:
             print()
-            for index, value in enumerate(picked):
-                print('{index}.{space}{city}\t{route}'.format(
-                    index=index + 1,
-                    space=("  " if index < 9 else " "),
-                    city=cities[value['city']]['name'],
-                    route=value['routeName']))
+            print("沒有找到任何路線，請重新查詢。")
 
-            print()
-            print("選擇想要查詢的路線")
+            self.__data['result'] = None
+            return False
 
-            select = input(self.__data['prompt'])
+        while True:
+            if len(choice) < 2 or not choice[1]:
+                print()
+                for index, value in enumerate(picked):
+                    print('{index}.{space}{city}\t{route}'.format(
+                        index=index + 1,
+                        space=("  " if index < 9 else " "),
+                        city=cities[value['city']]['name'],
+                        route=value['routeName']))
+
+                print()
+                print("選擇想要查詢的路線")
+
+                select = input(self.__data['prompt'])
+                try:
+                    choice[1] = select
+                except IndexError:
+                    choice.append(select)
+
             try:
-                choice[1] = select
-            except IndexError:
-                choice.append(select)
+                self.__data['result'] = picked[int(choice[1]) - 1]
+                return True
 
-        self.__data['result'] = picked[int(choice[1]) - 1]
+            except IndexError:
+                choice.pop(1)
 
     def main(self):
         self.filter()
-        self.choose()
+        if self.choose():
+            print("Success!")
 
-        # TODO: 移除此區塊
-        self.__data['choice'] = []
-        return 'main'
+            # TODO: 移除此區塊
+            self.__data['choice'] = []
+            return 'main'
+
+        else:
+            self.__data['choice'] = []
+            return 'main'
