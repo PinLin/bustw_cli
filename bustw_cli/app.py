@@ -25,6 +25,7 @@ class App:
         data = {
             'args': sys.argv,
             'choice': choice,
+            'result': None,
             'prompt': "(bustw)> ",
         }
 
