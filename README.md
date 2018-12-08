@@ -7,10 +7,6 @@ bus tracker for Taiwanese CLI version
 | --------------------------------------- | --------------------------------------- |
 | ![demo1](https://imgur.com/fzu6uG3.png) | ![demo2](https://imgur.com/my21Qy8.png) |
 
-## Require
-- Python 3
-    - requests
-
 ## Install
 ```bash
 # Install by `curl`
