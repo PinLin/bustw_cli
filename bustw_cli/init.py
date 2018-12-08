@@ -1,4 +1,5 @@
 from .utils.bustw import Bustw
+from .utils.color import red, green
 
 bustw = Bustw()
 
@@ -31,7 +32,7 @@ class Init:
                     index=index + 1,
                     space=("  " if index < 9 else " "),
                     city=value['name'],
-                    status=("\033[0;32m　檢索\033[0m" if value['enable'] else "\033[0;31m不檢索\033[0m")))
+                    status=(green("　檢索") if value['enable'] else red("不檢索"))))
 
             print("選擇城市以更改檢索狀態，或直接按下 Enter 以繼續")
             try:
