@@ -15,13 +15,19 @@ class Lookup:
         choice = self.__data['choice']
         picked = self.__picked
 
+        # 合併所有縣市的路線
         temp = []
         for route in list(routes.values()):
             temp += route
 
+        # 篩選符合條件的路線
         for route in temp:
-            if choice[0] in route['routeName']:
-                picked.append(route)
+            if not choice[0].split('/')[-1] in route['routeName']:
+                continue
+            if '/' in choice[0]:
+                if choice[0].split('/')[0] != route['city']:
+                    continue
+            picked.append(route)
 
     def choose(self):
         """選擇要查詢的路線"""
