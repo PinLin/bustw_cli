@@ -19,6 +19,7 @@ class Init:
         for item in bustw.get_city():
             cities[item['key']] = {
                 'name': item['name'],
+                'show': item['name'] + ('　' if len(item['name']) < 4 else ''),
                 'enable': (item['key'] in [
                     # 預設檢索
                     'Keelung', 'Taipei', 'NewTaipei', 'InterCity'
@@ -38,7 +39,7 @@ class Init:
                 key, value = couple
                 print('{0:<3} {1:^5} {2:^10}'.format(
                     str(index + 1) + ".",
-                    value['name'] + ("　" if len(value['name']) < 4 else ""),
+                    value['show'],
                     green(" 檢索") if value['enable'] else red("不檢索")))
 
             print()
