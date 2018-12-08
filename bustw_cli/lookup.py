@@ -101,10 +101,7 @@ class Lookup:
     def main(self):
         self.filter()
         if self.choose():
-            # TODO: 移除此區塊
-            print("Success!")
-            self.__data['choice'] = []
-            return 'main'
+            return 'result'
 
         else:
             self.__data['choice'] = []

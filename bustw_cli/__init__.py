@@ -28,6 +28,12 @@ def lookup(data):
     return Lookup(data).main()
 
 
+@app.view('result')
+def result(data):
+    from .result import Result
+    return Result(data).main()
+
+
 @app.view('old')
 def old(data):
     from .old import Old
