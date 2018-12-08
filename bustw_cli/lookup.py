@@ -1,3 +1,5 @@
+import readline
+
 from .utils.bustw import Bustw
 
 bustw = Bustw()
@@ -46,18 +48,29 @@ class Lookup:
             return False
 
         while True:
+            texts = []
             if len(choice) < 2 or not choice[1]:
                 print()
                 for index, value in enumerate(picked):
-                    print('{index}.{space}{city}\t{route}'.format(
-                        index=index + 1,
-                        space=("  " if index < 9 else " "),
-                        city=cities[value['city']]['name'],
-                        route=value['routeName']))
+                    texts.append(value['city'] + '.' + value['routeName'])
+
+                    print('{0:<3} {1:<7} {2}'.format(
+                        str(index + 1) + ".",
+                        cities[value['city']]['show'],
+                        value['routeName']))
 
                 print()
                 print("選擇想要查詢的路線")
 
+                def completer(text, state):
+                    commands = texts
+                    options = [i for i in commands if i.startswith(text)]
+                    if state < len(options):
+                        return options[state]
+                    else:
+                        return None
+
+                readline.set_completer(completer)
                 select = input(self.__data['prompt'])
                 try:
                     choice[1] = select
@@ -67,6 +80,18 @@ class Lookup:
             try:
                 self.__data['result'] = picked[int(choice[1]) - 1]
                 return True
+
+            except ValueError:
+                couple = choice[1].split('.')
+                for index, value in enumerate(picked):
+                    if value['city'] == couple[0]:
+                        if value['routeName'] == couple[-1]:
+                            self.__data['result'] = value
+                            return True
+
+                print()
+                print("沒有找到任何路線，請重新查詢。")
+                choice.pop(1)
 
             except IndexError:
                 choice.pop(1)
