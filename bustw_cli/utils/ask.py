@@ -1,4 +1,4 @@
-from .color import bold
+from .text import bold
 
 def ask() -> str:
     """接受使用者輸入"""

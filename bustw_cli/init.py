@@ -2,7 +2,7 @@ import readline
 
 from .utils.ask import ask
 from .utils.bustw import Bustw
-from .utils.color import red, green
+from .utils.text import red, green
 
 bustw = Bustw()
 
