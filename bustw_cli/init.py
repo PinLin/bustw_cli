@@ -17,7 +17,10 @@ class Init:
         for item in bustw.get_city():
             cities[item['key']] = {
                 'name': item['name'],
-                'enable': (item['key'] in ['Keelung', 'Taipei', 'NewTaipei', 'InterCity']),
+                'enable': (item['key'] in [
+                    # 預設檢索
+                    'Keelung', 'Taipei', 'NewTaipei', 'InterCity'
+                ]),
             }
 
     def select_cities(self):
@@ -27,25 +30,36 @@ class Init:
 
         print()
         while True:
-            for index, value in enumerate(cities.values()):
-                print('{index}.{space}{city}\t{status}'.format(
-                    index=index + 1,
-                    space=("  " if index < 9 else " "),
-                    city=value['name'],
-                    status=(green("　檢索") if value['enable'] else red("不檢索"))))
+            print("\n" * 20)
+
+            for index, couple in enumerate(cities.items()):
+                key, value = couple
+                print('{0:<3} {1:^5} {2:^10}'.format(
+                    str(index + 1) + ".",
+                    value['name'] + ("　" if len(value['name']) < 4 else ""),
+                    green(" 檢索") if value['enable'] else red("不檢索")))
 
             print("選擇城市以更改檢索狀態，或直接按下 Enter 以繼續")
+
+            select = input(self.__data['prompt'])
+            if select == '':
+                break
             try:
-                select = int(input(self.__data['prompt'])) - 1
-                key = list(cities.keys())[select]
+                # 使用者輸入數字
+                key = list(cities.keys())[int(select) - 1]
                 cities[key]['enable'] = not cities[key]['enable']
-                print("\n" * 10)
+
+            except ValueError:
+                # 使用者輸入字串
+                key = select
+                if key in cities:
+                    cities[key]['enable'] = not cities[key]['enable']
 
             except EOFError as e:
                 raise e
 
             except Exception:
-                break
+                continue
 
     def download_routes(self):
         """下載路線基本資料"""
