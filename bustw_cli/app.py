@@ -45,3 +45,7 @@ class App:
         except EOFError:
             print()
             print("Bye!")
+
+        except KeyboardInterrupt:
+            print()
+            print("KeyboardInterrupt")
