@@ -1,3 +1,5 @@
+import readline
+
 from .utils.bustw import Bustw
 from .utils.color import red, green
 
@@ -39,8 +41,18 @@ class Init:
                     value['name'] + ("　" if len(value['name']) < 4 else ""),
                     green(" 檢索") if value['enable'] else red("不檢索")))
 
+            print()
             print("選擇城市以更改檢索狀態，或直接按下 Enter 以繼續")
 
+            def completer(text, state):
+                commands = cities.keys()
+                options = [i for i in commands if i.startswith(text)]
+                if state < len(options):
+                    return options[state]
+                else:
+                    return None
+
+            readline.set_completer(completer)
             select = input(self.__data['prompt'])
             if select == '':
                 break
