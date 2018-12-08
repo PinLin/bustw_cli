@@ -18,7 +18,7 @@ class Main:
         if len(choice) < 1 or not choice[0]:
             print()
             print("直接按下 Enter 以進入設定頁")
-            print("或是輸入想要查詢的路線（範例：Taipei/72、680、台北市/幹線）")
+            print("或是輸入想要查詢的路線（範例：Taipei.72、680、台北市.幹線）")
 
 
             def completer(text, state):

@@ -23,11 +23,11 @@ class Lookup:
 
         # 篩選符合條件的路線
         for route in temp:
-            if not choice[0].split('/')[-1] in route['routeName']:
+            if not choice[0].split('.')[-1] in route['routeName']:
                 continue
-            if '/' in choice[0]:
-                if choice[0].split('/')[0] != route['city']:
-                    if choice[0].split('/')[0] != cities[route['city']]['name']:
+            if '.' in choice[0]:
+                if choice[0].split('.')[0] != route['city']:
+                    if choice[0].split('.')[0] != cities[route['city']]['name']:
                         continue
             picked.append(route)
 
