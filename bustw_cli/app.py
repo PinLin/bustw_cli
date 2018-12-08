@@ -1,6 +1,8 @@
 import sys
 import readline
 
+from .utils.color import bold
+
 
 class App:
     def __init__(self):
@@ -28,7 +30,7 @@ class App:
             'args': sys.argv,
             'choice': choice,
             'result': None,
-            'prompt': "(bustw)> ",
+            'prompt': bold("(bustw)> "),
         }
 
         try:
