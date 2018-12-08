@@ -11,6 +11,7 @@ class Lookup:
     def filter(self):
         """篩選出符合條件的路線"""
 
+        cities = self.__data['cities']
         routes = self.__data['routes']
         choice = self.__data['choice']
         picked = self.__picked
@@ -26,7 +27,8 @@ class Lookup:
                 continue
             if '/' in choice[0]:
                 if choice[0].split('/')[0] != route['city']:
-                    continue
+                    if choice[0].split('/')[0] != cities[route['city']]['name']:
+                        continue
             picked.append(route)
 
     def choose(self):
