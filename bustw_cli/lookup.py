@@ -1,5 +1,6 @@
 import readline
 
+from .utils.ask import ask
 from .utils.bustw import Bustw
 
 bustw = Bustw()
@@ -71,7 +72,8 @@ class Lookup:
                         return None
 
                 readline.set_completer(completer)
-                select = input(self.__data['prompt'])
+                select = ask()
+
                 try:
                     choice[1] = select
                 except IndexError:

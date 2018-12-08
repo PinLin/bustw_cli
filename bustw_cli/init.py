@@ -1,5 +1,6 @@
 import readline
 
+from .utils.ask import ask
 from .utils.bustw import Bustw
 from .utils.color import red, green
 
@@ -54,7 +55,8 @@ class Init:
                     return None
 
             readline.set_completer(completer)
-            select = input(self.__data['prompt'])
+            select = ask()
+
             if select == '':
                 break
             try:
