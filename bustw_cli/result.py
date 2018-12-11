@@ -11,6 +11,8 @@ class Result:
         self.__data = data
         self.__uid = None
         self.__stops = None
+        self.__reals = None
+        self.__times = None
 
     def download_stops(self):
         """下載路線站牌資料"""
@@ -27,6 +29,40 @@ class Result:
         for route in data:
             if route['routeUID'] == result['routeUID']:
                 self.__stops = route
+                return
+
+    def download_reals(self):
+        """下載路線定位資料"""
+
+        cities = self.__data['cities']
+        result = self.__data['result']
+
+        print()
+        print("正在下載{0}之路線 {1} 的定位資料...".format(
+            cities[result['city']]['name'],
+            result['routeName']))
+        data = bustw.get_real(result['city'], result['routeName'])
+
+        for route in data:
+            if route['routeUID'] == result['routeUID']:
+                self.__reals = route
+                return
+
+    def download_times(self):
+        """下載路線時間資料"""
+
+        cities = self.__data['cities']
+        result = self.__data['result']
+
+        print()
+        print("正在下載{0}之路線 {1} 的時間資料...".format(
+            cities[result['city']]['name'],
+            result['routeName']))
+        data = bustw.get_time(result['city'], result['routeName'])
+
+        for route in data:
+            if route['routeUID'] == result['routeUID']:
+                self.__times = route
                 return
 
     def choose(self):
@@ -97,6 +133,9 @@ class Result:
             except IndexError:
                 choice.pop(2)
 
+    def display(self):
+        pass
+
     def main(self):
         self.download_stops()
 
@@ -105,8 +144,11 @@ class Result:
                 self.__data['choice'] = self.__data['choice'][:1]
                 break
 
-            # TODO: 示意
-            print("Success!")
+            self.download_reals()
+            self.download_times()
+
+            self.display()
+
             self.__data['choice'] = self.__data['choice'][:2]
 
         # 是否有外部參數
