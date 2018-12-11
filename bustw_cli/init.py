@@ -55,7 +55,12 @@ class Init:
                     return None
 
             readline.set_completer(completer)
-            select = ask()
+            while True:
+                try:
+                    select = ask()
+                    break
+                except KeyboardInterrupt:
+                    print()
 
             if select == '':
                 break

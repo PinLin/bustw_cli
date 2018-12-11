@@ -21,7 +21,6 @@ class Main:
             print("直接按下 Enter 以進入設定頁")
             print("或是輸入想要查詢的路線（範例：Taipei.72、680、台北市.幹線）")
 
-
             def completer(text, state):
                 commands = cities.keys()
                 options = [i for i in commands if i.startswith(text)]
@@ -31,7 +30,12 @@ class Main:
                     return None
 
             readline.set_completer(completer)
-            select = ask()
+            while True:
+                try:
+                    select = ask()
+                    break
+                except KeyboardInterrupt:
+                    print()
 
             try:
                 choice[0] = select

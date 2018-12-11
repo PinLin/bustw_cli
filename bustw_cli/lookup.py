@@ -72,7 +72,11 @@ class Lookup:
                         return None
 
                 readline.set_completer(completer)
-                select = ask()
+                try:
+                    select = ask()
+                except KeyboardInterrupt:
+                    print()
+                    return False
 
                 try:
                     choice[1] = select

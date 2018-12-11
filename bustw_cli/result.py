@@ -68,7 +68,11 @@ class Result:
                         return None
 
                 readline.set_completer(completer)
-                select = ask()
+                try:
+                    select = ask()
+                except KeyboardInterrupt:
+                    print()
+                    return False
 
                 try:
                     choice[2] = select
@@ -77,12 +81,12 @@ class Result:
 
             try:
                 self.__uid = int(choice[2]) - 1
-                return
+                return True
 
             except ValueError:
                 if choice[2] in texts:
                     self.__uid = texts.index(choice[2])
-                    return
+                    return True
 
                 print()
                 print("沒有找到任何路線，請重新查詢。")
@@ -93,18 +97,18 @@ class Result:
 
     def main(self):
         self.download_stops()
-        self.choose()
 
-        # TODO: 示意
-        print("Success!")
+        while True:
+            if not self.choose():
+                self.__data['choice'] = self.__data['choice'][:1]
+                break
 
-        self.__data['choice'][2] = ''
+            # TODO: 示意
+            print("Success!")
+            self.__data['choice'] = self.__data['choice'][:2]
 
-        # 沒有外部參數
+        # 是否有外部參數
         if len(self.__data['args']) < 3:
-            self.__data['choice'] = []
-            return 'main'
-
-        # 有外部參數
+            return 'lookup'
         else:
             return 'exit'
