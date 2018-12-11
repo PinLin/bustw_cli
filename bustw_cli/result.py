@@ -80,12 +80,14 @@ class Result:
                     choice.append(select)
 
             try:
-                self.__uid = int(choice[2]) - 1
+                index = int(choice[2]) - 1
+                self.__uid = stops['subRoutes'][index]['subRouteUID']
                 return True
 
             except ValueError:
                 if choice[2] in texts:
-                    self.__uid = texts.index(choice[2])
+                    index = texts.index(choice[2])
+                    self.__uid = stops['subRoutes'][index]['subRouteUID']
                     return True
 
                 print()
