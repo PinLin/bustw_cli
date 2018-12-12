@@ -9,10 +9,11 @@ bustw = Bustw()
 class Result:
     def __init__(self, data: dict):
         self.__data = data
-        self.__uid = None
         self.__stops = None
         self.__reals = None
         self.__times = None
+        self.__uid = None
+        self.__info = {}
 
     def download_stops(self):
         """下載路線站牌資料"""
@@ -43,10 +44,11 @@ class Result:
             result['routeName']))
         data = bustw.get_real(result['city'], result['routeName'])
 
+        temp = []
         for route in data:
             if route['routeUID'] == result['routeUID']:
-                self.__reals = route
-                return
+                temp.append(route)
+        self.__reals = temp
 
     def download_times(self):
         """下載路線時間資料"""
@@ -60,10 +62,11 @@ class Result:
             result['routeName']))
         data = bustw.get_time(result['city'], result['routeName'])
 
+        temp = []
         for route in data:
             if route['routeUID'] == result['routeUID']:
-                self.__times = route
-                return
+                temp.append(route)
+        self.__times = temp
 
     def choose(self):
         """選擇要查詢的路線"""
@@ -133,8 +136,47 @@ class Result:
             except IndexError:
                 choice.pop(2)
 
-    def display(self):
-        pass
+    def process(self):
+        info = self.__info
+
+        info['city'] = self.__data['result']['city']
+
+        for sub_route in self.__stops['subRoutes']:
+            if sub_route['subRouteUID'] == self.__uid:
+                subRouteName = sub_route['subRouteName']
+                lastStopName = sub_route['stops'][-1]['stopName']
+                info['name'] = subRouteName + "（往" + lastStopName + "）"
+                info['stops'] = sub_route['stops'].copy()
+
+        temp = {}
+        for time in self.__times:
+            if time['routeName'] != self.__data['result']['routeName']:
+                continue
+            temp[time['stopUID']] = time
+        self.__times = temp
+
+        temp = {}
+        for real in self.__reals:
+            if real['routeName'] != self.__data['result']['routeName']:
+                continue
+            if not temp.get(real['stopUID']):
+                temp[real['stopUID']] = []
+            temp[real['stopUID']].append({
+                'arriving': real['arriving'],
+                'busNumber': real['busNumber'],
+                'busStatus': real['busStatus'],
+            })
+        self.__reals = temp
+
+        for stop in info['stops']:
+            time = self.__times[stop['stopUID']]
+            stop['estimateTime'] = time['estimateTime']
+            stop['stopStatus'] = time['stopStatus']
+
+            real = self.__reals.get(stop['stopUID']) or []
+            stop['bus'] = real
+
+        print(info)
 
     def main(self):
         self.download_stops()
@@ -147,7 +189,7 @@ class Result:
             self.download_reals()
             self.download_times()
 
-            self.display()
+            self.process()
 
             self.__data['choice'] = self.__data['choice'][:2]
 
