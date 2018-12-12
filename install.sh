@@ -148,7 +148,7 @@ main() {
     fi
 
     # Create alias
-    if ! command -v pause > /dev/null; then
+    if ! command -v ${ALIAS_NAME} > /dev/null; then
         for rc in ".zshrc" ".bash_profile" ".bashrc"
         do
             if [ -f "$HOME/$rc" -o $rc = ".bashrc" ]
