@@ -57,6 +57,12 @@ makeInstall() {
             ;;
 
             *)
+                if command -v apt-get > /dev/null 2>&1
+                    # Embedded Device with apt-get
+                    sudo apt-get install -y $1
+                    return $?
+                fi
+
                 if command -v ipkg > /dev/null 2>&1
                 then
                     # Embedded Device with ipkg
