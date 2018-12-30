@@ -32,9 +32,3 @@ def lookup(data):
 def result(data):
     from .result import Result
     return Result(data).main()
-
-
-@app.view('old')
-def old(data):
-    from .old import Old
-    return Old(data).main()

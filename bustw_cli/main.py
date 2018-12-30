@@ -48,7 +48,4 @@ class Main:
         if self.__data['choice'][0] == '':
             return 'setting'
 
-        if self.__data['choice'][0] == 'old':
-            return 'old'
-
         return 'lookup'
