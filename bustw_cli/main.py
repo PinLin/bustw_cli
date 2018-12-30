@@ -30,12 +30,7 @@ class Main:
                     return None
 
             readline.set_completer(completer)
-            while True:
-                try:
-                    select = ask()
-                    break
-                except KeyboardInterrupt:
-                    print()
+            select = ask()
 
             try:
                 choice[0] = select
