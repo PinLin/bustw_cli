@@ -1,5 +1,5 @@
 # bustw_cli
-bus tracker for Taiwanese CLI version
+bus tracker for Taiwanese for CLI
 
 ## Demo
 | `bustw Taipei.忠孝幹線 1 1`         | `bustw 52 23 2`          |
