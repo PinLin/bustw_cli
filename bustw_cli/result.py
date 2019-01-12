@@ -26,7 +26,7 @@ class Result:
         print("正在下載{0}之路線 {1} 的站牌資料...".format(
             cities[result['city']]['name'],
             result['routeName']))
-        data = bustw.get_stop(result['city'], result['routeName'], 2)
+        data = bustw.get_stop(result['city'], result['routeName'])
 
         for route in data:
             if route['routeUID'] == result['routeUID']:
