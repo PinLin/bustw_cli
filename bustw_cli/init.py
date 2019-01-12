@@ -17,7 +17,8 @@ class Init:
         cities = self.__data['cities']
 
         print("正在下載城市清單...")
-        for item in bustw.get_city():
+        items = bustw.get_city()['cities']
+        for item in items:
             cities[item['key']] = {
                 'name': item['name'],
                 'show': item['name'] + ('　' if len(item['name']) < 4 else ''),
@@ -93,7 +94,7 @@ class Init:
                 continue
 
             print("正在下載{city}的路線基本資料...".format(city=cities[city]['name']))
-            routes[city] = bustw.get_info(city)
+            routes[city] = bustw.get_info(city)['routes']
 
     def main(self):
         self.__data['cities'] = {}

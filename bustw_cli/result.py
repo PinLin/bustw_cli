@@ -26,7 +26,7 @@ class Result:
         print("正在下載{0}之路線 {1} 的站牌資料...".format(
             cities[result['city']]['name'],
             result['routeName']))
-        data = bustw.get_stop(result['city'], result['routeName'])
+        data = bustw.get_stop(result['city'], result['routeName'])['routes']
 
         for route in data:
             if route['routeUID'] == result['routeUID']:
@@ -43,7 +43,7 @@ class Result:
         print("正在下載{0}之路線 {1} 的定位資料...".format(
             cities[result['city']]['name'],
             result['routeName']))
-        data = bustw.get_real(result['city'], result['routeName'])
+        data = bustw.get_real(result['city'], result['routeName'])['buses']
 
         temp = []
         for route in data:
@@ -61,7 +61,7 @@ class Result:
         print("正在下載{0}之路線 {1} 的時間資料...".format(
             cities[result['city']]['name'],
             result['routeName']))
-        data = bustw.get_time(result['city'], result['routeName'])
+        data = bustw.get_time(result['city'], result['routeName'])['stops']
 
         temp = []
         for route in data:

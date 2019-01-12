@@ -6,7 +6,7 @@ class Bustw:
         self.__base = 'https://bus.ntut.com.tw/v1'
 
     def __get(self, resource: str, **kwargs):
-        url = self.__base + resource + '?ver=2'
+        url = self.__base + resource + '?ver=3'
         url = url.format(**kwargs)
 
         return requests.get(url).json()
