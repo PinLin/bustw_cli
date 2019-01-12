@@ -11,22 +11,22 @@ class Bustw:
 
         return requests.get(url).json()
 
-    def get_city(self, city: str='', ver: int=None):
+    def get_city(self, ver: int=None):
         """從伺服器取得城市資料"""
-        return self.__fetch('/city/{city}', ver, city=city)
+        return self.__fetch('/city', ver)
 
     def get_info(self, city: str, route: str='', ver: int=None):
         """從伺服器取得路線基本資料"""
         return self.__fetch('/info/{city}/{route}', ver, city=city, route=route)
 
-    def get_stop(self, city: str, route: str='', ver: int=None):
+    def get_stop(self, city: str, route: str, ver: int=None):
         """從伺服器取得路線站牌資料"""
         return self.__fetch('/stop/{city}/{route}', ver, city=city, route=route)
 
-    def get_real(self, city: str, route: str='', ver: int=None):
+    def get_real(self, city: str, route: str, ver: int=None):
         """從伺服器取得路線定位資料"""
         return self.__fetch('/real/{city}/{route}', ver, city=city, route=route)
 
-    def get_time(self, city: str, route: str='', ver: int=None):
+    def get_time(self, city: str, route: str, ver: int=None):
         """從伺服器取得路線時間資料"""
         return self.__fetch('/time/{city}/{route}', ver, city=city, route=route)
