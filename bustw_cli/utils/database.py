@@ -29,11 +29,11 @@ class Database:
             )''')
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS route (
-            routeUID text,
-            routeName text,
+            route_uid text,
+            route_name text,
             city text,
-            departureStopName text,
-            destinationStopName text,
+            departure_stop_name text,
+            destination_stop_name text,
             FOREIGN KEY (city) REFERENCES city (english_name) ON DELETE CASCADE
             )''')
 
@@ -67,11 +67,11 @@ class Database:
         cursor = self.__db.cursor()
 
         cursor.execute('INSERT INTO route VALUES (?, ?, ?, ?, ?)',
-                       (route['routeUID'],
-                        route['routeName'],
+                       (route['route_uid'],
+                        route['route_name'],
                         route['city'],
-                        route['departureStopName'],
-                        route['destinationStopName：']))
+                        route['departure_stop_name'],
+                        route['destination_stop_name']))
 
     def delete_routes(self, city: str):
         cursor = self.__db.cursor()
