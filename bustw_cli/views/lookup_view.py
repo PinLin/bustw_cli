@@ -1,22 +1,22 @@
+from .base_view import BaseView
+
 import readline
 
-from .utils.ask import ask
-from .utils.bustw import Bustw
-
-bustw = Bustw()
+from ..utils.ask import ask
 
 
-class Lookup:
+class LookupView(BaseView):
     def __init__(self, data: dict):
-        self.__data = data
+        super().__init__(data)
+
         self.__picked = []
 
     def filter(self):
         """篩選出符合條件的路線"""
 
-        cities = self.__data['cities']
-        routes = self.__data['routes']
-        choice = self.__data['choice']
+        cities = self.data['cities']
+        routes = self.data['routes']
+        choice = self.data['choice']
         picked = self.__picked
 
         # 合併所有縣市的路線
@@ -37,15 +37,15 @@ class Lookup:
     def choose(self):
         """選擇要查詢的路線"""
 
-        cities = self.__data['cities']
-        choice = self.__data['choice']
+        cities = self.data['cities']
+        choice = self.data['choice']
         picked = self.__picked
 
         if len(picked) == 0:
             print()
             print("沒有找到任何路線，請重新查詢。")
 
-            self.__data['result'] = None
+            self.data['result'] = None
             return False
 
         while True:
@@ -84,7 +84,7 @@ class Lookup:
                     choice.append(select)
 
             try:
-                self.__data['result'] = picked[int(choice[1]) - 1]
+                self.data['result'] = picked[int(choice[1]) - 1]
                 return True
 
             except ValueError:
@@ -92,7 +92,7 @@ class Lookup:
                 for index, value in enumerate(picked):
                     if value['city'] == couple[0]:
                         if value['routeName'] == couple[-1]:
-                            self.__data['result'] = value
+                            self.data['result'] = value
                             return True
 
                 print()
@@ -108,5 +108,5 @@ class Lookup:
             return 'result'
 
         else:
-            self.__data['choice'] = []
+            self.data['choice'] = []
             return 'main'

@@ -29,8 +29,8 @@ def setting(data):
 
 @app.view('lookup')
 def lookup(data):
-    from .lookup import Lookup
-    return Lookup(data).main()
+    from .views.lookup_view import LookupView
+    return LookupView(data).main()
 
 
 @app.view('result')
