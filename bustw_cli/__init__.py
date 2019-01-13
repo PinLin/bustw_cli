@@ -5,8 +5,8 @@ app = App()
 
 @app.view('init')
 def init(data):
-    from .init import Init
-    return Init(data).main()
+    from .views.init_view import InitView
+    return InitView(data).main()
 
 
 @app.view('city')
