@@ -35,5 +35,5 @@ def lookup(data):
 
 @app.view('result')
 def result(data):
-    from .result import Result
-    return Result(data).main()
+    from .views.result_view import ResultView
+    return ResultView(data).main()

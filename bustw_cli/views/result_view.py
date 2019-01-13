@@ -1,15 +1,16 @@
+from .base_view import BaseView
+
 import readline
 
-from .utils.ask import ask
-from .utils.bustw import Bustw
-from .utils.less import print_less
-
-bustw = Bustw()
+from ..utils.ask import ask
+from ..utils.bustw import Bustw
+from ..utils.less import print_less
 
 
-class Result:
+class ResultView(BaseView):
     def __init__(self, data: dict):
-        self.__data = data
+        super().__init__(data)
+
         self.__stops = None
         self.__reals = None
         self.__times = None
@@ -19,14 +20,14 @@ class Result:
     def download_stops(self):
         """下載路線站牌資料"""
 
-        cities = self.__data['cities']
-        result = self.__data['result']
+        cities = self.data['cities']
+        result = self.data['result']
 
         print()
         print("正在下載{0}之路線 {1} 的站牌資料...".format(
             cities[result['city']]['name'],
             result['routeName']))
-        data = bustw.get_stop(result['city'], result['routeName'])['routes']
+        data = Bustw().get_stop(result['city'], result['routeName'])['routes']
 
         for route in data:
             if route['routeUID'] == result['routeUID']:
@@ -36,14 +37,14 @@ class Result:
     def download_reals(self):
         """下載路線定位資料"""
 
-        cities = self.__data['cities']
-        result = self.__data['result']
+        cities = self.data['cities']
+        result = self.data['result']
 
         print()
         print("正在下載{0}之路線 {1} 的定位資料...".format(
             cities[result['city']]['name'],
             result['routeName']))
-        data = bustw.get_real(result['city'], result['routeName'])['buses']
+        data = Bustw().get_real(result['city'], result['routeName'])['buses']
 
         temp = []
         for route in data:
@@ -54,14 +55,14 @@ class Result:
     def download_times(self):
         """下載路線時間資料"""
 
-        cities = self.__data['cities']
-        result = self.__data['result']
+        cities = self.data['cities']
+        result = self.data['result']
 
         print()
         print("正在下載{0}之路線 {1} 的時間資料...".format(
             cities[result['city']]['name'],
             result['routeName']))
-        data = bustw.get_time(result['city'], result['routeName'])['stops']
+        data = Bustw().get_time(result['city'], result['routeName'])['stops']
 
         temp = []
         for route in data:
@@ -72,9 +73,9 @@ class Result:
     def choose(self):
         """選擇要查詢的路線"""
 
-        cities = self.__data['cities']
-        choice = self.__data['choice']
-        result = self.__data['result']
+        cities = self.data['cities']
+        choice = self.data['choice']
+        result = self.data['result']
         stops = self.__stops
 
         while True:
@@ -140,7 +141,7 @@ class Result:
     def process(self):
         info = self.__info
 
-        info['city'] = self.__data['result']['city']
+        info['city'] = self.data['result']['city']
 
         for sub_route in self.__stops['subRoutes']:
             if sub_route['subRouteUID'] == self.__uid:
@@ -151,14 +152,14 @@ class Result:
 
         temp = {}
         for time in self.__times:
-            if time['routeName'] != self.__data['result']['routeName']:
+            if time['routeName'] != self.data['result']['routeName']:
                 continue
             temp[time['stopUID']] = time
         self.__times = temp
 
         temp = {}
         for real in self.__reals:
-            if real['routeName'] != self.__data['result']['routeName']:
+            if real['routeName'] != self.data['result']['routeName']:
                 continue
             if not temp.get(real['stopUID']):
                 temp[real['stopUID']] = []
@@ -178,7 +179,7 @@ class Result:
             stop['buses'] = real
 
     def display(self):
-        cities = self.__data['cities']
+        cities = self.data['cities']
         info = self.__info
 
         result = ''
@@ -247,7 +248,7 @@ class Result:
 
         while True:
             if not self.choose():
-                self.__data['choice'] = self.__data['choice'][:1]
+                self.data['choice'] = self.data['choice'][:1]
                 break
 
             self.download_reals()
@@ -256,10 +257,10 @@ class Result:
             self.process()
             self.display()
 
-            self.__data['choice'] = self.__data['choice'][:2]
+            self.data['choice'] = self.data['choice'][:2]
 
         # 是否有外部參數
-        if len(self.__data['args']) < 3:
+        if len(self.data['args']) < 3:
             return 'lookup'
         else:
             return 'exit'
