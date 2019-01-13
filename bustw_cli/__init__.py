@@ -23,8 +23,8 @@ def main(data):
 
 @app.view('setting')
 def setting(data):
-    from .setting import Setting
-    return Setting(data).main()
+    from .views.setting_view import SettingView
+    return SettingView(data).main()
 
 
 @app.view('lookup')
