@@ -11,8 +11,8 @@ def init(data):
 
 @app.view('city')
 def city(data):
-    from .city import City
-    return City(data).main()
+    from .views.city_view import CityView
+    return CityView(data).main()
 
 
 @app.view('main')

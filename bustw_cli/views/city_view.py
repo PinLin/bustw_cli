@@ -1,23 +1,20 @@
+from .base_view import BaseView
+
 import readline
 
-from .utils.ask import ask
-from .utils.bustw import Bustw
-from .utils.text import red, green
-
-bustw = Bustw()
+from ..utils.ask import ask
+from ..utils.bustw import Bustw
+from ..utils.text import red, green
 
 
-class City:
-    def __init__(self, data: dict):
-        self.__data = data
-
+class CityView(BaseView):
     def load_cities(self):
         """讀取城市資料"""
 
-        cities = self.__data['cities']
+        cities = self.data['cities']
 
         print("正在下載城市清單...")
-        items = bustw.get_city()['cities']
+        items = Bustw().get_city()['cities']
         for item in items:
             cities[item['key']] = {
                 'name': item['name'],
@@ -31,7 +28,7 @@ class City:
     def select_cities(self):
         """選擇要搜尋的資料"""
 
-        cities = self.__data['cities']
+        cities = self.data['cities']
 
         print()
         while True:
@@ -85,8 +82,8 @@ class City:
     def download_routes(self):
         """下載路線基本資料"""
 
-        cities = self.__data['cities']
-        routes = self.__data['routes']
+        cities = self.data['cities']
+        routes = self.data['routes']
 
         print()
         for city in cities:
@@ -94,11 +91,11 @@ class City:
                 continue
 
             print("正在下載{city}的路線基本資料...".format(city=cities[city]['name']))
-            routes[city] = bustw.get_info(city)['routes']
+            routes[city] = Bustw().get_info(city)['routes']
 
     def main(self):
-        self.__data['cities'] = {}
-        self.__data['routes'] = {}
+        self.data['cities'] = {}
+        self.data['routes'] = {}
 
         self.load_cities()
         self.select_cities()
