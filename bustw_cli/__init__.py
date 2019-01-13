@@ -17,8 +17,8 @@ def city(data):
 
 @app.view('main')
 def main(data):
-    from .main import Main
-    return Main(data).main()
+    from .views.main_view import MainView
+    return MainView(data).main()
 
 
 @app.view('setting')

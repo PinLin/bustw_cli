@@ -1,20 +1,16 @@
+from .base_view import BaseView
+
 import readline
 
-from .utils.ask import ask
-from .utils.bustw import Bustw
-
-bustw = Bustw()
+from ..utils.ask import ask
 
 
-class Main:
-    def __init__(self, data: dict):
-        self.__data = data
-
+class MainView(BaseView):
     def search(self):
         """設定要搜尋的路線"""
 
-        cities = self.__data['cities']
-        choice = self.__data['choice']
+        cities = self.data['cities']
+        choice = self.data['choice']
 
         if len(choice) < 1 or not choice[0]:
             print()
@@ -40,7 +36,7 @@ class Main:
     def main(self):
         self.search()
 
-        if self.__data['choice'][0] == '':
+        if self.data['choice'][0] == '':
             return 'setting'
 
         return 'lookup'
