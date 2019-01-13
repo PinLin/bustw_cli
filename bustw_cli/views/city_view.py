@@ -6,6 +6,7 @@ from PyInquirer import prompt
 
 from ..utils.ask import ask
 from ..utils.bustw import Bustw
+from ..utils.city_name import CityName
 from ..utils.database import Database
 from ..utils.text import red, green
 
@@ -59,6 +60,7 @@ class CityView(BaseView):
 
         with Database() as db:
             cities = db.select_city()
+            city_name = CityName(cities)
 
         questions = [
             {
@@ -77,18 +79,37 @@ class CityView(BaseView):
 
         print()
         answer = prompt(questions)
-        print(answer)
+        print()
+
+        with Database() as db:
+            for chinese_name in city_name.chinese:
+                english_name = city_name.to_english(chinese_name)
+                db.update_city(english_name, chinese_name in answer['cities'])
 
     def download_routes(self):
         """下載路線基本資料"""
 
-        cities = self.data['cities']
-        routes = self.data['routes']
+        with Database() as db:
+            cities = db.select_city()
 
-        print()
         for city in cities:
-            if not cities[city]['enable']:
-                continue
+            if city[2]:
+                print("🌐 正在下載{city}的路線基本資料...".format(city=city[1]))
+                routes = Bustw().get_info(city[0])['routes']
+                with Database() as db:
+                    db.delete_routes(city[0])
 
-            print("正在下載{city}的路線基本資料...".format(city=cities[city]['name']))
-            routes[city] = Bustw().get_info(city)['routes']
+                    for route in routes:
+                        db.insert_route({
+                            'route_uid': route['routeUID'],
+                            'route_name': route['routeName'],
+                            'city': route['city'],
+                            'departure_stop_name': route['departureStopName'],
+                            'destination_stop_name': route['destinationStopName'],
+                        })
+
+                self.data['routes'][city] = routes  # deprecated
+
+            else:
+                with Database() as db:
+                    db.delete_routes(city[0])
