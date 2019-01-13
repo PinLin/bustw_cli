@@ -32,7 +32,7 @@ class App:
 
         try:
             # 功能跳轉
-            func = 'init'
+            func = 'city'
             while True:
                 if func == 'exit':
                     break

@@ -7,7 +7,7 @@ from .utils.text import red, green
 bustw = Bustw()
 
 
-class Init:
+class City:
     def __init__(self, data: dict):
         self.__data = data
 
