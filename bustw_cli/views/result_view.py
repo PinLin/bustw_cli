@@ -17,6 +17,28 @@ class ResultView(BaseView):
         self.__uid = None
         self.__info = {}
 
+    def main(self):
+        self.download_stops()
+
+        while True:
+            if not self.choose():
+                self.data['choice'] = self.data['choice'][:1]
+                break
+
+            self.download_reals()
+            self.download_times()
+
+            self.process()
+            self.display()
+
+            self.data['choice'] = self.data['choice'][:2]
+
+        # 是否有外部參數
+        if len(self.data['args']) < 3:
+            return 'lookup'
+        else:
+            return 'exit'
+
     def download_stops(self):
         """下載路線站牌資料"""
 
@@ -242,25 +264,3 @@ class ResultView(BaseView):
                 result += '\n'
 
         print_less(result)
-
-    def main(self):
-        self.download_stops()
-
-        while True:
-            if not self.choose():
-                self.data['choice'] = self.data['choice'][:1]
-                break
-
-            self.download_reals()
-            self.download_times()
-
-            self.process()
-            self.display()
-
-            self.data['choice'] = self.data['choice'][:2]
-
-        # 是否有外部參數
-        if len(self.data['args']) < 3:
-            return 'lookup'
-        else:
-            return 'exit'

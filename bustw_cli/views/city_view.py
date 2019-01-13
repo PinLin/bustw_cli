@@ -8,6 +8,16 @@ from ..utils.text import red, green
 
 
 class CityView(BaseView):
+    def main(self):
+        self.data['cities'] = {}
+        self.data['routes'] = {}
+
+        self.load_cities()
+        self.select_cities()
+        self.download_routes()
+
+        return 'main'
+
     def load_cities(self):
         """讀取城市資料"""
 
@@ -92,13 +102,3 @@ class CityView(BaseView):
 
             print("正在下載{city}的路線基本資料...".format(city=cities[city]['name']))
             routes[city] = Bustw().get_info(city)['routes']
-
-    def main(self):
-        self.data['cities'] = {}
-        self.data['routes'] = {}
-
-        self.load_cities()
-        self.select_cities()
-        self.download_routes()
-
-        return 'main'

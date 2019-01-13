@@ -6,6 +6,14 @@ from ..utils.ask import ask
 
 
 class MainView(BaseView):
+    def main(self):
+        self.search()
+
+        if self.data['choice'][0] == '':
+            return 'setting'
+
+        return 'lookup'
+
     def search(self):
         """設定要搜尋的路線"""
 
@@ -32,11 +40,3 @@ class MainView(BaseView):
                 choice[0] = select
             except IndexError:
                 choice.append(select)
-
-    def main(self):
-        self.search()
-
-        if self.data['choice'][0] == '':
-            return 'setting'
-
-        return 'lookup'

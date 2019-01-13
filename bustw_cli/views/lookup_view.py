@@ -11,6 +11,15 @@ class LookupView(BaseView):
 
         self.__picked = []
 
+    def main(self):
+        self.filter()
+        if self.choose():
+            return 'result'
+
+        else:
+            self.data['choice'] = []
+            return 'main'
+
     def filter(self):
         """篩選出符合條件的路線"""
 
@@ -101,12 +110,3 @@ class LookupView(BaseView):
 
             except IndexError:
                 choice.pop(1)
-
-    def main(self):
-        self.filter()
-        if self.choose():
-            return 'result'
-
-        else:
-            self.data['choice'] = []
-            return 'main'
