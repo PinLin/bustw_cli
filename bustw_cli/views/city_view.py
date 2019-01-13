@@ -4,35 +4,52 @@ import readline
 
 from ..utils.ask import ask
 from ..utils.bustw import Bustw
+from ..utils.database import Database
 from ..utils.text import red, green
 
 
 class CityView(BaseView):
     def main(self):
-        self.data['cities'] = {}
-        self.data['routes'] = {}
+        self.data['cities'] = {}    # deprecated
+        self.data['routes'] = {}    # deprecated
 
-        self.load_cities()
+        with Database() as db:
+            if not len(db.select_city()):
+                self.download_cities()
+
+        self.load_cities()  # deprecated
         self.select_cities()
         self.download_routes()
 
         return 'main'
 
+    def download_cities(self):
+        """下載城市資料"""
+
+        print("🌐 正在下載城市清單...")
+        cities = Bustw().get_city()['cities']
+
+        with Database() as db:
+            for city in cities:
+                db.insert_city({
+                    'english_name': city['key'],
+                    'chinese_name': city['name'],
+                    'status': 0,
+                })
+
     def load_cities(self):
-        """讀取城市資料"""
+        """[deprecated] 讀取城市資料"""
 
         cities = self.data['cities']
 
-        print("正在下載城市清單...")
-        items = Bustw().get_city()['cities']
+        with Database() as db:
+            items = db.select_city()
+
         for item in items:
-            cities[item['key']] = {
-                'name': item['name'],
-                'show': item['name'] + ('　' if len(item['name']) < 4 else ''),
-                'enable': (item['key'] in [
-                    # 預設檢索
-                    'Keelung', 'Taipei', 'NewTaipei', 'InterCity'
-                ]),
+            cities[item[0]] = {
+                'name': item[1],
+                'show': item[1] + ('　' if len(item[1]) < 4 else ''),
+                'enable': item[2],
             }
 
     def select_cities(self):
