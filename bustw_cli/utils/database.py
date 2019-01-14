@@ -55,7 +55,7 @@ class Database:
         cursor = self.__db.cursor()
 
         cursor.execute('UPDATE city SET status=? WHERE english_name=?',
-                       (status, english_name))
+                       [status, english_name])
 
     def select_route(self, city: str) -> list:
         cursor = self.__db.cursor()
@@ -67,11 +67,11 @@ class Database:
         cursor = self.__db.cursor()
 
         cursor.execute('INSERT INTO route VALUES (?, ?, ?, ?, ?)',
-                       (route['route_uid'],
+                       [route['route_uid'],
                         route['route_name'],
                         route['city'],
                         route['departure_stop_name'],
-                        route['destination_stop_name']))
+                        route['destination_stop_name']])
 
     def delete_routes(self, city: str):
         cursor = self.__db.cursor()
