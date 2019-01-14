@@ -3,6 +3,8 @@ from .base_view import BaseView
 import readline
 
 from ..utils.ask import ask
+from ..utils.city_name import CityName
+from ..utils.database import Database
 
 
 class MainView(BaseView):
@@ -17,7 +19,10 @@ class MainView(BaseView):
     def search(self):
         """設定要搜尋的路線"""
 
-        cities = self.data['cities']
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
+
         choice = self.data['choice']
 
         if len(choice) < 1 or not choice[0]:
@@ -26,7 +31,7 @@ class MainView(BaseView):
             print("或是輸入想要查詢的路線（範例：Taipei.72、680、台北市.幹線）")
 
             def completer(text, state):
-                commands = cities.keys()
+                commands = city_name.english
                 options = [i for i in commands if i.startswith(text)]
                 if state < len(options):
                     return options[state]
