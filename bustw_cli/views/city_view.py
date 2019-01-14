@@ -1,14 +1,10 @@
 from .base_view import BaseView
 
-import readline
-
 from PyInquirer import prompt
 
-from ..utils.ask import ask
 from ..utils.bustw import Bustw
 from ..utils.city_name import CityName
 from ..utils.database import Database
-from ..utils.text import red, green
 
 
 class CityView(BaseView):
