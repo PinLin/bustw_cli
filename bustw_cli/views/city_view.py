@@ -74,13 +74,13 @@ class CityView(BaseView):
         ]
 
         print()
-        answer = prompt(questions)
+        answer = prompt(questions)['cities']
         print()
 
         with Database() as db:
             for chinese_name in city_name.chinese:
                 english_name = city_name.to_english(chinese_name)
-                db.update_city(english_name, chinese_name in answer['cities'])
+                db.update_city(english_name, chinese_name in answer)
 
     def download_routes(self):
         """下載路線基本資料"""

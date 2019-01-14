@@ -24,7 +24,7 @@ class SettingView(BaseView):
         ]
 
         print()
-        answer = prompt(questions)
+        answer = prompt(questions)['choice']
         print()
 
-        return functions[answer['choice']]
+        return functions[answer]
