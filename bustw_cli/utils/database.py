@@ -41,7 +41,14 @@ class Database:
         cursor = self.__db.cursor()
 
         cursor.execute('SELECT * FROM city')
-        return cursor.fetchall()
+
+        def to_dict(data: list) -> dict:
+            return {
+                'english_name': data[0],
+                'chinese_name': data[1],
+                'status': data[2],
+            }
+        return list(map(to_dict, cursor.fetchall()))
 
     def insert_city(self, city: dict):
         cursor = self.__db.cursor()

@@ -1,7 +1,7 @@
 class CityName:
     def __init__(self, cities: list):
-        self.__english = list(map(lambda x: x[0], cities))
-        self.__chinese = list(map(lambda x: x[1], cities))
+        self.__english = list(map(lambda x: x['english_name'], cities))
+        self.__chinese = list(map(lambda x: x['chinese_name'], cities))
 
     @property
     def english(self):

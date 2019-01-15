@@ -47,8 +47,8 @@ class CityView(BaseView):
                 'name': 'cities',
                 'choices': [
                     {
-                        'name': city[1],
-                        'checked': city[2]
+                        'name': city['chinese_name'],
+                        'checked': city['status']
                     } for city in cities
                 ]
             }
@@ -70,11 +70,11 @@ class CityView(BaseView):
             cities = db.select_city()
 
         for city in cities:
-            if city[2]:
-                print("🌐 正在下載{city}的路線基本資料...".format(city=city[1]))
-                routes = Bustw().get_info(city[0])['routes']
+            if city['status']:
+                print("🌐 正在下載{city}的路線基本資料...".format(city=city['chinese_name']))
+                routes = Bustw().get_info(city['english_name'])['routes']
                 with Database() as db:
-                    db.delete_routes(city[0])
+                    db.delete_routes(city['english_name'])
 
                     for route in routes:
                         db.insert_route({
@@ -87,4 +87,4 @@ class CityView(BaseView):
 
             else:
                 with Database() as db:
-                    db.delete_routes(city[0])
+                    db.delete_routes(city['english_name'])
