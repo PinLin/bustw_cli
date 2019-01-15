@@ -4,6 +4,8 @@ import readline
 
 from ..utils.ask import ask
 from ..utils.bustw import Bustw
+from ..utils.city_name import CityName
+from ..utils.database import Database
 from ..utils.less import print_less
 
 
@@ -42,12 +44,15 @@ class ResultView(BaseView):
     def download_stops(self):
         """下載路線站牌資料"""
 
-        cities = self.data['cities']
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
+
         result = self.data['result']
 
         print()
         print("正在下載{0}之路線 {1} 的站牌資料...".format(
-            cities[result['city']]['name'],
+            city_name.to_chinese(result['city']),
             result['routeName']))
         data = Bustw().get_stop(result['city'], result['routeName'])['routes']
 
@@ -59,12 +64,15 @@ class ResultView(BaseView):
     def download_reals(self):
         """下載路線定位資料"""
 
-        cities = self.data['cities']
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
+
         result = self.data['result']
 
         print()
         print("正在下載{0}之路線 {1} 的定位資料...".format(
-            cities[result['city']]['name'],
+            city_name.to_chinese(result['city']),
             result['routeName']))
         data = Bustw().get_real(result['city'], result['routeName'])['buses']
 
@@ -77,12 +85,15 @@ class ResultView(BaseView):
     def download_times(self):
         """下載路線時間資料"""
 
-        cities = self.data['cities']
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
+
         result = self.data['result']
 
         print()
         print("正在下載{0}之路線 {1} 的時間資料...".format(
-            cities[result['city']]['name'],
+            city_name.to_chinese(result['city']),
             result['routeName']))
         data = Bustw().get_time(result['city'], result['routeName'])['stops']
 
@@ -95,7 +106,10 @@ class ResultView(BaseView):
     def choose(self):
         """選擇要查詢的路線"""
 
-        cities = self.data['cities']
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
+
         choice = self.data['choice']
         result = self.data['result']
         stops = self.__stops
@@ -105,7 +119,7 @@ class ResultView(BaseView):
             if len(choice) < 3 or not choice[2]:
                 print()
                 print("以下是{0}之路線 {1} 的子路線".format(
-                    cities[result['city']]['name'],
+                    city_name.to_chinese(result['city']),
                     result['routeName']))
 
                 print()
@@ -201,12 +215,16 @@ class ResultView(BaseView):
             stop['buses'] = real
 
     def display(self):
-        cities = self.data['cities']
+
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
+
         info = self.__info
 
         result = ''
         result += '\n'
-        result += '{0} {1}'.format(cities[info['city']]['name'], info['name'])
+        result += '{0} {1}'.format(city_name.to_chinese(info['city']), info['name'])
         result += '\n'
         result += "=" * 50
         result += '\n'
