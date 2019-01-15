@@ -23,7 +23,15 @@ class LookupView(BaseView):
             cities = db.select_city()
             city_name = CityName(cities)
 
-            routes = db.select_route(choice[0])
+            if '.' in choice[0]:
+                city, select = choice[0].split('.')
+                
+                if city in city_name.chinese:
+                    city = city_name.to_english(city)
+
+                routes = db.select_route(select, city)
+            else:
+                routes = db.select_route(choice[0])
 
         if len(routes) == 0:
             print()
