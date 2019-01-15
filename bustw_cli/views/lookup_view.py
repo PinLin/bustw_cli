@@ -9,7 +9,7 @@ from ..utils.database import Database
 class LookupView(BaseView):
     def main(self):
         if self.choose():
-            return 'result'
+            return 'switch'
 
         self.data['choice'] = []
         return 'main'

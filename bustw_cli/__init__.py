@@ -33,6 +33,12 @@ def lookup(data):
     return LookupView(data).main()
 
 
+@app.view('switch')
+def switch(data):
+    from .views.switch_view import SwitchView
+    return SwitchView(data).main()
+
+
 @app.view('result')
 def result(data):
     from .views.result_view import ResultView
