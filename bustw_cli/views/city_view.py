@@ -9,14 +9,10 @@ from ..utils.database import Database
 
 class CityView(BaseView):
     def main(self):
-        self.data['cities'] = {}    # deprecated
-        self.data['routes'] = {}    # deprecated
-
         with Database() as db:
             if not len(db.select_city()):
                 self.download_cities()
 
-        self.load_cities()  # deprecated
         self.select_cities()
         self.download_routes()
 
@@ -35,21 +31,6 @@ class CityView(BaseView):
                     'chinese_name': city['name'],
                     'status': 0,
                 })
-
-    def load_cities(self):
-        """[deprecated] 讀取城市資料"""
-
-        cities = self.data['cities']
-
-        with Database() as db:
-            items = db.select_city()
-
-        for item in items:
-            cities[item[0]] = {
-                'name': item[1],
-                'show': item[1] + ('　' if len(item[1]) < 4 else ''),
-                'enable': item[2],
-            }
 
     def select_cities(self):
         """選擇要搜尋的資料"""
@@ -103,8 +84,6 @@ class CityView(BaseView):
                             'departure_stop_name': route['departureStopName'],
                             'destination_stop_name': route['destinationStopName'],
                         })
-
-                self.data['routes'][city] = routes  # deprecated
 
             else:
                 with Database() as db:
