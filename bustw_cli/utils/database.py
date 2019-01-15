@@ -69,7 +69,16 @@ class Database:
 
         cursor.execute('SELECT * FROM route WHERE route_name LIKE ?',
                        ['%' + route_name + '%'])
-        return cursor.fetchall()
+
+        def to_dict(data: list) -> dict:
+            return {
+                'route_uid': data[0],
+                'route_name': data[1],
+                'city': data[2],
+                'departure_stop_name': data[3],
+                'destination_stop_name': data[4],
+            }
+        return list(map(to_dict, cursor.fetchall()))
 
     def insert_route(self, route: dict):
         cursor = self.__db.cursor()

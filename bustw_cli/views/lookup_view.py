@@ -33,7 +33,7 @@ class LookupView(BaseView):
             return False
 
         choices = list(map(lambda x: '［{0}］{1}'.format(
-            city_name.to_chinese(x[2]), x[1]), routes))
+            city_name.to_chinese(x['city']), x['route_name']), routes))
 
         questions = [
             {
@@ -57,11 +57,11 @@ class LookupView(BaseView):
 
             route = routes[choice[1]]
             self.data['result'] = {
-                'routeUID': route[0],               # TODO: Rename
-                'routeName': route[1],              # TODO: Rename
-                'city': route[2],                   # TODO: Rename
-                'departureStopName': route[3],      # TODO: Rename
-                'destinationStopName': route[4],    # TODO: Rename
+                'routeUID': route['route_uid'],                         # TODO: Rename
+                'routeName': route['route_name'],                       # TODO: Rename
+                'city': route['city'],                                  # TODO: Rename
+                'departureStopName': route['departure_stop_name'],      # TODO: Rename
+                'destinationStopName': route['destination_stop_name'],  # TODO: Rename
             }
 
         return True
