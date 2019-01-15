@@ -1,112 +1,67 @@
 from .base_view import BaseView
 
-import readline
+from PyInquirer import prompt
 
-from ..utils.ask import ask
+from ..utils.city_name import CityName
+from ..utils.database import Database
 
 
 class LookupView(BaseView):
-    def __init__(self, data: dict):
-        super().__init__(data)
-
-        self.__picked = []
-
     def main(self):
-        self.filter()
         if self.choose():
             return 'result'
 
-        else:
-            self.data['choice'] = []
-            return 'main'
-
-    def filter(self):
-        """篩選出符合條件的路線"""
-
-        cities = self.data['cities']
-        routes = self.data['routes']
-        choice = self.data['choice']
-        picked = self.__picked
-
-        # 合併所有縣市的路線
-        temp = []
-        for route in list(routes.values()):
-            temp += route
-
-        # 篩選符合條件的路線
-        for route in temp:
-            if not choice[0].split('.')[-1] in route['routeName']:
-                continue
-            if '.' in choice[0]:
-                if choice[0].split('.')[0] != route['city']:
-                    if choice[0].split('.')[0] != cities[route['city']]['name']:
-                        continue
-            picked.append(route)
+        self.data['choice'] = []
+        return 'main'
 
     def choose(self):
         """選擇要查詢的路線"""
 
-        cities = self.data['cities']
         choice = self.data['choice']
-        picked = self.__picked
 
-        if len(picked) == 0:
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
+
+            routes = db.select_route(choice[0])
+
+        if len(routes) == 0:
             print()
-            print("沒有找到任何路線，請重新查詢。")
+            print("🚌 沒有找到任何路線，請再試一次。")
 
             self.data['result'] = None
             return False
 
-        while True:
-            texts = []
-            if len(choice) < 2 or not choice[1]:
-                print()
-                for index, value in enumerate(picked):
-                    texts.append(value['city'] + '.' + value['routeName'])
+        choices = list(map(lambda x: '［{0}］{1}'.format(
+            city_name.to_chinese(x[2]), x[1]), routes))
 
-                    print('{0:<3} {1:<7} {2}'.format(
-                        str(index + 1) + ".",
-                        cities[value['city']]['show'],
-                        value['routeName']))
+        questions = [
+            {
+                'type': 'list',
+                'qmark': '🚌 ',
+                'name': 'choice',
+                'message': '請選擇要查看的路線\n',
+                'choices': choices
+            }
+        ]
 
-                print()
-                print("選擇想要查詢的路線")
-
-                def completer(text, state):
-                    commands = texts
-                    options = [i for i in commands if i.startswith(text)]
-                    if state < len(options):
-                        return options[state]
-                    else:
-                        return None
-
-                readline.set_completer(completer)
-                try:
-                    select = ask()
-                except KeyboardInterrupt:
-                    print()
-                    return False
-
-                try:
-                    choice[1] = select
-                except IndexError:
-                    choice.append(select)
+        if len(choice) < 2 or not choice[1]:
+            print()
+            answer = prompt(questions)['choice']
+            print()
 
             try:
-                self.data['result'] = picked[int(choice[1]) - 1]
-                return True
-
-            except ValueError:
-                couple = choice[1].split('.')
-                for index, value in enumerate(picked):
-                    if value['city'] == couple[0]:
-                        if value['routeName'] == couple[-1]:
-                            self.data['result'] = value
-                            return True
-
-                print()
-                print("沒有找到任何路線，請重新查詢。")
-                choice.pop(1)
-
+                choice[1] = choices.index(answer)
             except IndexError:
-                choice.pop(1)
+                choice.append(choices.index(answer))
+
+            route = routes[choice[1]]
+            self.data['result'] = {
+                'routeUID': route[0],               # TODO: Rename
+                'routeName': route[1],              # TODO: Rename
+                'city': route[2],                   # TODO: Rename
+                'departureStopName': route[3],      # TODO: Rename
+                'destinationStopName': route[4],    # TODO: Rename
+            }
+
+        return True
