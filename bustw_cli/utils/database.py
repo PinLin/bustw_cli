@@ -57,10 +57,11 @@ class Database:
         cursor.execute('UPDATE city SET status=? WHERE english_name=?',
                        [status, english_name])
 
-    def select_route(self, city: str) -> list:
+    def select_route(self, route_name: str) -> list:
         cursor = self.__db.cursor()
 
-        cursor.execute('SELECT * FROM route WHERE city = ?', [city])
+        cursor.execute('SELECT * FROM route WHERE route_name LIKE ?',
+                       ['%' + route_name + '%'])
         return cursor.fetchall()
 
     def insert_route(self, route: dict):
