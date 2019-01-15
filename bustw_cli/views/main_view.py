@@ -26,12 +26,8 @@ class MainView(BaseView):
         choice = self.data['choice']
 
         if len(choice) < 1 or not choice[0]:
-            print()
-            print("直接按下 Enter 以進入設定頁")
-            print("或是輸入想要查詢的路線（範例：Taipei.72、680、台北市.幹線）")
-
             def completer(text, state):
-                commands = city_name.english
+                commands = city_name.english + city_name.chinese
                 options = [i for i in commands if i.startswith(text)]
                 if state < len(options):
                     return options[state]
@@ -39,7 +35,9 @@ class MainView(BaseView):
                     return None
 
             readline.set_completer(completer)
-            select = ask()
+            print()
+            select = ask(
+                "🔍 請輸入想要查詢的路線或是按下 Enter 進入設定頁面\n  （範例：72、Keelung.501、台北市.幹線）")
 
             try:
                 choice[0] = select
