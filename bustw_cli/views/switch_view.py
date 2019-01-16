@@ -46,7 +46,7 @@ class SwitchView(BaseView):
         result = self.data['result']
 
         print()
-        print("正在下載{0}之路線 {1} 的站牌資料...".format(
+        print("🌐 正在下載{0}之路線 {1} 的站牌資料...".format(
             city_name.to_chinese(result['city']),
             result['routeName']))
         data = Bustw().get_stop(result['city'], result['routeName'])['routes']
@@ -66,7 +66,7 @@ class SwitchView(BaseView):
         result = self.data['result']
 
         print()
-        print("正在下載{0}之路線 {1} 的定位資料...".format(
+        print("🌐 正在下載{0}之路線 {1} 的定位資料...".format(
             city_name.to_chinese(result['city']),
             result['routeName']))
         data = Bustw().get_real(result['city'], result['routeName'])['buses']
@@ -87,7 +87,7 @@ class SwitchView(BaseView):
         result = self.data['result']
 
         print()
-        print("正在下載{0}之路線 {1} 的時間資料...".format(
+        print("🌐 正在下載{0}之路線 {1} 的時間資料...".format(
             city_name.to_chinese(result['city']),
             result['routeName']))
         data = Bustw().get_time(result['city'], result['routeName'])['stops']
