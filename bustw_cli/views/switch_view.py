@@ -6,7 +6,6 @@ from ..utils.ask import ask
 from ..utils.bustw import Bustw
 from ..utils.city_name import CityName
 from ..utils.database import Database
-from ..utils.less import print_less
 
 
 class SwitchView(BaseView):
