@@ -47,7 +47,7 @@ class LookupView(BaseView):
             {
                 'type': 'list',
                 'qmark': '🚌 ',
-                'name': 'choice',
+                'name': 'answer',
                 'message': '請選擇要查看的路線\n',
                 'choices': choices
             }
@@ -55,7 +55,10 @@ class LookupView(BaseView):
 
         if len(choice) < 2 or not choice[1]:
             print()
-            answer = prompt(questions)['choice']
+            try:
+                answer = prompt(questions)['answer']
+            except KeyError:
+                raise KeyboardInterrupt
             print()
 
             try:

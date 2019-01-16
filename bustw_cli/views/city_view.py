@@ -44,7 +44,7 @@ class CityView(BaseView):
                 'type': 'checkbox',
                 'qmark': '🏙 ',
                 'message': '請選擇要檢索的城市\n',
-                'name': 'cities',
+                'name': 'answer',
                 'choices': [
                     {
                         'name': city['chinese_name'],
@@ -55,7 +55,10 @@ class CityView(BaseView):
         ]
 
         print()
-        answer = prompt(questions)['cities']
+        try:
+            answer = prompt(questions)['answer']
+        except KeyError:
+            raise KeyboardInterrupt
         print()
 
         with Database() as db:

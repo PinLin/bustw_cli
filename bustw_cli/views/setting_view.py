@@ -17,14 +17,17 @@ class SettingView(BaseView):
             {
                 'type': 'list',
                 'qmark': '🔧 ',
-                'name': 'choice',
+                'name': 'answer',
                 'message': '請選擇要修改的設定\n',
                 'choices': functions.keys()
             }
         ]
 
         print()
-        answer = prompt(questions)['choice']
+        try:
+            answer = prompt(questions)['answer']
+        except KeyError:
+            raise KeyboardInterrupt
         print()
 
         return functions[answer]
