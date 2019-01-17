@@ -14,7 +14,7 @@ class CityView(BaseView):
                 self.download_cities()
 
         self.select_cities()
-        self.download_routes()
+        self.update_routes()
 
         return 'main'
 
@@ -66,8 +66,8 @@ class CityView(BaseView):
                 english_name = city_name.to_english(chinese_name)
                 db.update_city(english_name, chinese_name in answer)
 
-    def download_routes(self):
-        """下載路線基本資料"""
+    def update_routes(self):
+        """更新路線基本資料"""
 
         with Database() as db:
             cities = db.select_city()
