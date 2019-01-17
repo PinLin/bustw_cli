@@ -8,37 +8,60 @@ from ..utils.database import Database
 
 class LookupView(BaseView):
     def main(self):
-        if self.choose():
-            return 'switch'
-
-        self.data['choice'] = []
-        return 'main'
-
-    def choose(self):
-        """選擇要查詢的路線"""
-
         choice = self.data['choice']
+
+        routes = self.select_routes(choice[0])
+        if len(routes) == 0:
+            print()
+            print("🚌 沒有找到任何路線，請再試一次。")
+
+            return 'main'
+
+        if len(choice) < 2 or not choice[1]:
+            result = self.choose(routes)
+
+            try:
+                choice[1] = result
+            except IndexError:
+                choice.append(result)
+
+        # 判斷是否要進入查詢流程
+        if choice[1]:
+            choice[1] = int(choice[1]) - 1
+            self.data['result'] = routes[choice[1]]
+            return 'switch'
+            
+        else:
+            choice[1] = None
+            choice[0] = None
+            return 'main'
+
+    def select_routes(self, route_name: str):
+        """取得資料庫中名稱符合的路線"""
 
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
 
-            if '.' in choice[0]:
-                city, select = choice[0].split('.')
-                
+            if '.' in route_name:
+                city, select = route_name.split('.')
+
                 if city in city_name.chinese:
                     city = city_name.to_english(city)
 
                 routes = db.select_route(select, city)
+
             else:
-                routes = db.select_route(choice[0])
+                routes = db.select_route(route_name)
 
-        if len(routes) == 0:
-            print()
-            print("🚌 沒有找到任何路線，請再試一次。")
+        return routes
 
-            self.data['result'] = None
-            return False
+    def choose(self, routes: list):
+        """選擇要查詢的路線"""
+
+        with Database() as db:
+            cities = db.select_city()
+            city_name = CityName(cities)
 
         choices = list(map(lambda x: '［{0}］{1}'.format(
             city_name.to_chinese(x['city']), x['route_name']), routes))
@@ -55,25 +78,11 @@ class LookupView(BaseView):
             }
         ]
 
-        if len(choice) < 2 or not choice[1]:
-            print()
-            try:
-                answer = prompt(questions)['answer']
-            except KeyError:
-                raise KeyboardInterrupt
-            print()
+        print()
+        try:
+            answer = prompt(questions)['answer']
+        except KeyError:
+            raise KeyboardInterrupt
+        print()
 
-            if answer == '  回到主畫面':
-                self.data['result'] = None
-                return False
-
-            try:
-                choice[1] = choices.index(answer)
-            except IndexError:
-                choice.append(choices.index(answer))
-
-        index = int(choice[1]) - 1
-        route = routes[index]
-        self.data['result'] = route
-
-        return True
+        return choices.index(answer)
