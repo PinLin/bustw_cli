@@ -11,7 +11,6 @@ class SwitchView(BaseView):
     def __init__(self, data: dict):
         super().__init__(data)
 
-        self.__reals = None
         self.__times = None
         self.__uid = None
 
@@ -19,10 +18,10 @@ class SwitchView(BaseView):
         stops = self.download_stops()
 
         if self.choose(stops):
-            self.download_reals()
+            reals = self.download_reals()
             self.download_times()
 
-            self.process(stops)
+            self.process(stops, reals)
             return 'result'
 
         self.data['choice'] = self.data['choice'][:1]
@@ -71,7 +70,7 @@ class SwitchView(BaseView):
         for route in data:
             if route['routeUID'] == result['routeUID']:
                 temp.append(route)
-        self.__reals = temp
+        return temp
 
     def download_times(self):
         """下載路線時間資料"""
@@ -142,7 +141,7 @@ class SwitchView(BaseView):
         self.__uid = stops['subRoutes'][index]['subRouteUID']
         return True
 
-    def process(self, stops):
+    def process(self, stops, reals):
         self.data['info'] = {}
         info = self.data['info']
 
@@ -163,7 +162,7 @@ class SwitchView(BaseView):
         self.__times = temp
 
         temp = {}
-        for real in self.__reals:
+        for real in reals:
             if real['routeName'] != self.data['result']['routeName']:
                 continue
             if not temp.get(real['stopUID']):
@@ -173,12 +172,12 @@ class SwitchView(BaseView):
                 'busNumber': real['busNumber'],
                 'busStatus': real['busStatus'],
             })
-        self.__reals = temp
+        reals = temp
 
         for stop in info['stops']:
             time = self.__times[stop['stopUID']]
             stop['estimateTime'] = time['estimateTime']
             stop['stopStatus'] = time['stopStatus']
 
-            real = self.__reals.get(stop['stopUID']) or []
+            real = reals.get(stop['stopUID']) or []
             stop['buses'] = real
