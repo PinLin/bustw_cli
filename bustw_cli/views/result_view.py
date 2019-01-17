@@ -7,18 +7,16 @@ from ..utils.less import print_less
 
 class ResultView(BaseView):
     def main(self):
-        self.display()
+        self.display(self.data['info'])
 
         self.data['choice'] = self.data['choice'][:2]
 
         return 'switch'
 
-    def display(self):
+    def display(self, info):
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
-
-        info = self.data['info']
 
         result = '\033[0;1m［{0}］{1}\033[0m\n'.format(
             city_name.to_chinese(info['city']), info['name'])
