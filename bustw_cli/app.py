@@ -34,9 +34,6 @@ class App:
             # 功能跳轉
             func = 'init'
             while True:
-                if func == 'exit':
-                    break
-
                 func = self.__views[func](data)
 
         except EOFError:

@@ -25,11 +25,7 @@ class SwitchView(BaseView):
 
         self.data['choice'] = self.data['choice'][:1]
 
-        # 是否有外部參數
-        if len(self.data['args']) < 3:
-            return 'lookup'
-        else:
-            return 'exit'
+        return 'lookup'
 
     def download_stops(self):
         """下載路線站牌資料"""
