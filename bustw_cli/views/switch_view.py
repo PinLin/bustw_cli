@@ -11,19 +11,18 @@ class SwitchView(BaseView):
     def __init__(self, data: dict):
         super().__init__(data)
 
-        self.__stops = None
         self.__reals = None
         self.__times = None
         self.__uid = None
 
     def main(self):
-        self.download_stops()
+        stops = self.download_stops()
 
-        if self.choose():
+        if self.choose(stops):
             self.download_reals()
             self.download_times()
 
-            self.process()
+            self.process(stops)
             return 'result'
 
         self.data['choice'] = self.data['choice'][:1]
@@ -51,8 +50,7 @@ class SwitchView(BaseView):
 
         for route in data:
             if route['routeUID'] == result['routeUID']:
-                self.__stops = route
-                return
+                return route
 
     def download_reals(self):
         """下載路線定位資料"""
@@ -96,7 +94,7 @@ class SwitchView(BaseView):
                 temp.append(route)
         self.__times = temp
 
-    def choose(self):
+    def choose(self, stops):
         """選擇要查詢的路線"""
 
         with Database() as db:
@@ -105,7 +103,6 @@ class SwitchView(BaseView):
 
         choice = self.data['choice']
         result = self.data['result']
-        stops = self.__stops
 
         choices = list(map(lambda x: '{0}（往{1}）'.format(
             x['subRouteName'], x['stops'][-1]['stopName']), stops['subRoutes']))
@@ -145,13 +142,13 @@ class SwitchView(BaseView):
         self.__uid = stops['subRoutes'][index]['subRouteUID']
         return True
 
-    def process(self):
+    def process(self, stops):
         self.data['info'] = {}
         info = self.data['info']
 
         info['city'] = self.data['result']['city']
 
-        for sub_route in self.__stops['subRoutes']:
+        for sub_route in stops['subRoutes']:
             if sub_route['subRouteUID'] == self.__uid:
                 subRouteName = sub_route['subRouteName']
                 lastStopName = sub_route['stops'][-1]['stopName']
