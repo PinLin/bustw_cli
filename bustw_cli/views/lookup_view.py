@@ -43,7 +43,7 @@ class LookupView(BaseView):
         choices = list(map(lambda x: '［{0}］{1}'.format(
             city_name.to_chinese(x['city']), x['route_name']), routes))
 
-        choices = ['  回到主畫面'] + choices
+        choices.insert(0, '  回到主畫面')
 
         questions = [
             {
@@ -72,7 +72,8 @@ class LookupView(BaseView):
             except IndexError:
                 choice.append(choices.index(answer))
 
-        route = routes[int(choice[1]) - 1]
+        index = int(choice[1]) - 1
+        route = routes[index]
         self.data['result'] = {
             'routeUID': route['route_uid'],                         # TODO: Rename
             'routeName': route['route_name'],                       # TODO: Rename
