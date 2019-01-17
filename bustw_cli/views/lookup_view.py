@@ -74,12 +74,6 @@ class LookupView(BaseView):
 
         index = int(choice[1]) - 1
         route = routes[index]
-        self.data['result'] = {
-            'routeUID': route['route_uid'],                         # TODO: Rename
-            'routeName': route['route_name'],                       # TODO: Rename
-            'city': route['city'],                                  # TODO: Rename
-            'departureStopName': route['departure_stop_name'],      # TODO: Rename
-            'destinationStopName': route['destination_stop_name'],  # TODO: Rename
-        }
+        self.data['result'] = route
 
         return True

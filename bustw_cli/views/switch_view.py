@@ -39,11 +39,11 @@ class SwitchView(BaseView):
         print()
         print("🌐 正在下載{0}之路線 {1} 的站牌資料...".format(
             city_name.to_chinese(result['city']),
-            result['routeName']))
-        data = Bustw().get_stop(result['city'], result['routeName'])['routes']
+            result['route_name']))
+        data = Bustw().get_stop(result['city'], result['route_name'])['routes']
 
         for route in data:
-            if route['routeUID'] == result['routeUID']:
+            if route['routeUID'] == result['route_uid']:
                 return route
 
     def download_reals(self):
@@ -58,12 +58,12 @@ class SwitchView(BaseView):
         print()
         print("🌐 正在下載{0}之路線 {1} 的定位資料...".format(
             city_name.to_chinese(result['city']),
-            result['routeName']))
-        data = Bustw().get_real(result['city'], result['routeName'])['buses']
+            result['route_name']))
+        data = Bustw().get_real(result['city'], result['route_name'])['buses']
 
         temp = []
         for route in data:
-            if route['routeUID'] == result['routeUID']:
+            if route['routeUID'] == result['route_uid']:
                 temp.append(route)
         return temp
 
@@ -79,12 +79,12 @@ class SwitchView(BaseView):
         print()
         print("🌐 正在下載{0}之路線 {1} 的時間資料...".format(
             city_name.to_chinese(result['city']),
-            result['routeName']))
-        data = Bustw().get_time(result['city'], result['routeName'])['stops']
+            result['route_name']))
+        data = Bustw().get_time(result['city'], result['route_name'])['stops']
 
         temp = []
         for route in data:
-            if route['routeUID'] == result['routeUID']:
+            if route['routeUID'] == result['route_uid']:
                 temp.append(route)
         return temp
 
@@ -110,7 +110,7 @@ class SwitchView(BaseView):
                 'name': 'answer',
                 'message': '請選擇要查看的［{0}］{1} 之子路線\n'.format(
                     city_name.to_chinese(result['city']),
-                    result['routeName']),
+                    result['route_name']),
                 'choices': choices
             }
         ]
@@ -151,14 +151,14 @@ class SwitchView(BaseView):
 
         temp = {}
         for time in times:
-            if time['routeName'] != self.data['result']['routeName']:
+            if time['routeName'] != self.data['result']['route_name']:
                 continue
             temp[time['stopUID']] = time
         times = temp
 
         temp = {}
         for real in reals:
-            if real['routeName'] != self.data['result']['routeName']:
+            if real['routeName'] != self.data['result']['route_name']:
                 continue
             if not temp.get(real['stopUID']):
                 temp[real['stopUID']] = []
