@@ -20,13 +20,9 @@ class ResultView(BaseView):
 
         info = self.data['info']
 
-        result = ''
-        result += '\n'
-        result += '{0} {1}'.format(
+        result = '\033[0;1m［{0}］{1}\033[0m\n'.format(
             city_name.to_chinese(info['city']), info['name'])
-        result += '\n'
-        result += "=" * 50
-        result += '\n'
+        result += "=" * 50 + '\n'
 
         for stop in info['stops']:
             # 未發車
