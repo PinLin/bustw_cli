@@ -1,8 +1,7 @@
 from .base_view import BaseView
 
-import readline
+from PyInquirer import prompt
 
-from ..utils.ask import ask
 from ..utils.bustw import Bustw
 from ..utils.city_name import CityName
 from ..utils.database import Database
@@ -108,65 +107,43 @@ class SwitchView(BaseView):
         result = self.data['result']
         stops = self.__stops
 
-        while True:
-            texts = []
-            if len(choice) < 3 or not choice[2]:
-                print()
-                print("以下是{0}之路線 {1} 的子路線".format(
+        choices = list(map(lambda x: '{0}（往{1}）'.format(
+            x['subRouteName'], x['stops'][-1]['stopName']), stops['subRoutes']))
+
+        choices.insert(0, '  回到主畫面')
+
+        questions = [
+            {
+                'type': 'list',
+                'qmark': '🛣 ',
+                'name': 'answer',
+                'message': '請選擇要查看的［{0}］{1} 之子路線\n'.format(
                     city_name.to_chinese(result['city']),
-                    result['routeName']))
+                    result['routeName']),
+                'choices': choices
+            }
+        ]
 
-                print()
-                for index, value in enumerate(stops['subRoutes']):
-                    subRouteName = value['subRouteName']
-                    lastStopName = value['stops'][-1]['stopName']
+        if len(choice) < 3 or not choice[2]:
+            print()
+            try:
+                answer = prompt(questions)['answer']
+            except KeyError:
+                raise KeyboardInterrupt
+            print()
 
-                    texts.append(subRouteName + "（往" + lastStopName + "）")
-
-                    print('{0:<3} {1}'.format(
-                        str(index + 1) + ".",
-                        subRouteName + "（往" + lastStopName + "）"))
-
-                print()
-                print("選擇想要查詢的子路線")
-
-                def completer(text, state):
-                    commands = texts
-                    options = [i for i in commands if i.startswith(text)]
-                    if state < len(options):
-                        return options[state]
-                    else:
-                        return None
-
-                readline.set_completer(completer)
-                try:
-                    select = ask()
-                except KeyboardInterrupt:
-                    print()
-                    return False
-
-                try:
-                    choice[2] = select
-                except IndexError:
-                    choice.append(select)
+            if answer == '  回到主畫面':
+                self.data['result'] = None
+                return False
 
             try:
-                index = int(choice[2]) - 1
-                self.__uid = stops['subRoutes'][index]['subRouteUID']
-                return True
-
-            except ValueError:
-                if choice[2] in texts:
-                    index = texts.index(choice[2])
-                    self.__uid = stops['subRoutes'][index]['subRouteUID']
-                    return True
-
-                print()
-                print("沒有找到任何路線，請重新查詢。")
-                choice.pop(2)
-
+                choice[2] = choices.index(answer)
             except IndexError:
-                choice.pop(2)
+                choice.append(choices.index(answer))
+
+        index = int(choice[2]) - 1
+        self.__uid = stops['subRoutes'][index]['subRouteUID']
+        return True
 
     def process(self):
         self.data['info'] = {}
