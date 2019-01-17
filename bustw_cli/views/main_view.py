@@ -9,12 +9,21 @@ from ..utils.database import Database
 
 class MainView(BaseView):
     def main(self):
-        self.search()
+        choice = self.data['choice']
 
-        if self.data['choice'][0] == '':
+        if len(choice) < 1 or not choice[0]:
+            result = self.search()
+
+            try:
+                choice[0] = result
+            except IndexError:
+                choice.append(result)
+
+        # 判斷是否要進入查詢流程
+        if choice[0]:
+            return 'lookup'
+        else:
             return 'setting'
-
-        return 'lookup'
 
     def search(self):
         """設定要搜尋的路線"""
@@ -23,23 +32,18 @@ class MainView(BaseView):
             cities = db.select_city()
             city_name = CityName(cities)
 
-        choice = self.data['choice']
+        def completer(text, state):
+            commands = city_name.english + city_name.chinese
+            options = [i for i in commands if i.startswith(text)]
+            if state < len(options):
+                return options[state]
+            else:
+                return None
+        readline.set_completer(completer)
 
-        if len(choice) < 1 or not choice[0]:
-            def completer(text, state):
-                commands = city_name.english + city_name.chinese
-                options = [i for i in commands if i.startswith(text)]
-                if state < len(options):
-                    return options[state]
-                else:
-                    return None
+        question = "🔍 請輸入想要查詢的路線或是按下 Enter 進入設定頁面\n"
+        question += "  （範例：72、Keelung.501、台北市.幹線）"
+        print()
+        answer = ask(question)
 
-            readline.set_completer(completer)
-            print()
-            select = ask(
-                "🔍 請輸入想要查詢的路線或是按下 Enter 進入設定頁面\n  （範例：72、Keelung.501、台北市.幹線）")
-
-            try:
-                choice[0] = select
-            except IndexError:
-                choice.append(select)
+        return answer
