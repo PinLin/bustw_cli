@@ -25,16 +25,17 @@ class LookupView(BaseView):
             except IndexError:
                 choice.append(result)
 
-        # 判斷是否要進入查詢流程
-        if choice[1]:
-            choice[1] = int(choice[1]) - 1
-            self.data['result'] = routes[choice[1]]
-            return 'switch'
-            
-        else:
+        if not choice[1]:
             choice[1] = None
             choice[0] = None
+
             return 'main'
+
+        choice[1] = int(choice[1]) - 1
+
+        self.data['result'] = routes[choice[1]]
+
+        return 'switch'
 
     def select_routes(self, route_name: str):
         """取得資料庫中名稱符合的路線"""

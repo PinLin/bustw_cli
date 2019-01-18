@@ -19,11 +19,10 @@ class MainView(BaseView):
             except IndexError:
                 choice.append(result)
 
-        # 判斷是否要進入查詢流程
-        if choice[0]:
-            return 'lookup'
-        else:
+        if not choice[0]:
             return 'setting'
+
+        return 'lookup'
 
     def search(self):
         """設定要搜尋的路線"""
