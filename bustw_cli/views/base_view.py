@@ -1,6 +1,6 @@
 class BaseView:
-    def __init__(self, data: dict):
-        self.data = data
+    def __init__(self, data: dict=None):
+        self.data = data    # deprecated
 
-    def main(self):
+    def main(self, data: dict):
         pass
