@@ -1,18 +1,11 @@
 import sys
 
+from .views.base_view import BaseView
+
 
 class App:
-    def __init__(self):
-        self.__views = {}
-
-    def view(self, name: str):
-        """註冊顯示介面"""
-
-        def decorator(func, *args, **kwargs):
-            # 將函式新增至介面 dict 中
-            self.__views[name] = func
-            return func
-        return decorator
+    def __init__(self, config: dict):
+        self.__config = config
 
     def run(self):
         """程式開始執行"""
@@ -21,18 +14,9 @@ class App:
         choice = sys.argv.copy()
         choice.pop(0)
 
-        # 共享資料
-        data = {
-            'args': sys.argv,
-            'choice': choice,
-            'result': None,
-        }
-
         try:
-            # 功能跳轉
-            func = 'main'
-            while True:
-                func = self.__views[func](data)
+            init_view = self.__config['init_view']
+            init_view().main(choice)
 
         except EOFError:
             print()

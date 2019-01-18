@@ -8,33 +8,31 @@ from ..utils.database import Database
 
 
 class MainView(BaseView):
-    def main(self):
+    def main(self, choice: list):
         with Database() as db:
             if not len(db.select_city()):
                 from .city_view import CityView
                 CityView().main()
 
-        choice = self.data['choice']
+        while True:
+            if len(choice) < 1 or not choice[0]:
+                select = self.search()
 
-        if len(choice) < 1 or not choice[0]:
-            select = self.search()
+                try:
+                    choice[0] = select
+                except IndexError:
+                    choice.append(select)
 
-            try:
-                choice[0] = select
-            except IndexError:
-                choice.append(select)
+            if not choice[0]:
+                from .setting_view import SettingView
+                SettingView().main()
 
-        if not choice[0]:
-            from .setting_view import SettingView
-            SettingView().main()
+                continue
 
-        else:
             from .lookup_view import LookupView
             LookupView().main(choice)
 
             choice[0] = None
-
-        return 'main'
 
     def search(self):
         """設定要搜尋的路線"""
