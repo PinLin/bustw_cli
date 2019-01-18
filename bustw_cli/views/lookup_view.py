@@ -7,38 +7,35 @@ from ..utils.database import Database
 
 
 class LookupView(BaseView):
-    def main(self):
-        choice = self.data['choice']
-
+    def main(self, choice: list):
         routes = self.select_routes(choice[0])
         if len(routes) == 0:
             print()
             print("🚌 沒有找到任何路線，請再試一次。")
 
-            return 'main'
+            return
 
         while True:
             if len(choice) < 2 or not choice[1]:
                 select = self.choose(routes)
-    
+
                 try:
                     choice[1] = select
                 except IndexError:
                     choice.append(select)
-    
+
             if not choice[1]:
                 choice[1] = None
-                choice[0] = None
-    
-                return 'main'
-    
+
+                return
+
             choice[1] = int(choice[1]) - 1
-    
+
             result = routes[choice[1]]
-    
+
             from .switch_view import SwitchView
             SwitchView().main(choice, result)
-    
+
             choice[1] = None
 
     def select_routes(self, route_name: str):

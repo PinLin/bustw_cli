@@ -28,10 +28,13 @@ class MainView(BaseView):
             from .setting_view import SettingView
             SettingView().main()
 
-            return 'main'
-
         else:
-            return 'lookup'
+            from .lookup_view import LookupView
+            LookupView().main(choice)
+
+            choice[0] = None
+
+        return 'main'
 
     def search(self):
         """設定要搜尋的路線"""
