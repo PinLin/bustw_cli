@@ -17,25 +17,29 @@ class LookupView(BaseView):
 
             return 'main'
 
-        if len(choice) < 2 or not choice[1]:
-            select = self.choose(routes)
-
-            try:
-                choice[1] = select
-            except IndexError:
-                choice.append(select)
-
-        if not choice[1]:
+        while True:
+            if len(choice) < 2 or not choice[1]:
+                select = self.choose(routes)
+    
+                try:
+                    choice[1] = select
+                except IndexError:
+                    choice.append(select)
+    
+            if not choice[1]:
+                choice[1] = None
+                choice[0] = None
+    
+                return 'main'
+    
+            choice[1] = int(choice[1]) - 1
+    
+            result = routes[choice[1]]
+    
+            from .switch_view import SwitchView
+            SwitchView().main(choice, result)
+    
             choice[1] = None
-            choice[0] = None
-
-            return 'main'
-
-        choice[1] = int(choice[1]) - 1
-
-        self.data['result'] = routes[choice[1]]
-
-        return 'switch'
 
     def select_routes(self, route_name: str):
         """取得資料庫中名稱符合的路線"""

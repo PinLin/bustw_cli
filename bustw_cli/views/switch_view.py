@@ -8,10 +8,7 @@ from ..utils.database import Database
 
 
 class SwitchView(BaseView):
-    def main(self):
-        choice = self.data['choice']
-        result = self.data['result']
-
+    def main(self, choice: list, result: dict):
         stops = self.download_stops(result)
 
         while True:
@@ -25,22 +22,16 @@ class SwitchView(BaseView):
 
             if not choice[2]:
                 choice[2] = None
-                choice[1] = None
 
-                return 'lookup'
+                return
 
             choice[2] = int(choice[2]) - 1
 
-            reals = self.download_reals(result)
-            times = self.download_times(result)
-
-            uid = stops['subRoutes'][choice[2]]['subRouteUID']
-
             info = {
-                'uid': uid,
                 'stops': stops,
-                'reals': reals,
-                'times': times,
+                'reals': self.download_reals(result),
+                'times': self.download_times(result),
+                'uid': stops['subRoutes'][choice[2]]['subRouteUID'],
             }
 
             from .result_view import ResultView
