@@ -79,37 +79,37 @@ class ResultView(BaseView):
 
             # 未發車
             if stop['stopStatus'] == 1:
-                result += "\033[47m\033[30m[ 未發車 ]\033[0m "
+                result += "\033[47m\033[30m｜ 未發車 ｜\033[0m "
 
             # 交管不停
             elif stop['stopStatus'] == 2:
-                result += "\033[43m\033[30m[交管不停]\033[0m "
+                result += "\033[43m\033[30m｜交管不停｜\033[0m "
 
             # 末班駛離
             elif stop['stopStatus'] == 3:
-                result += "\033[47m\033[30m[末班駛離]\033[0m "
+                result += "\033[47m\033[30m｜末班駛離｜\033[0m "
 
             # 今日不開
             elif stop['stopStatus'] == 4:
-                result += "\033[47m\033[30m[今日不開]\033[0m "
+                result += "\033[47m\033[30m｜今日不開｜\033[0m "
 
             # 有車
             else:
                 # 有車且進站中
                 if len(stop['buses']) > 0 and 1 in list(map(lambda x: x['arriving'], stop['buses'])):
-                    result += "\033[41m\033[97m[ 進站中 ]\033[0m "
+                    result += "\033[41m\033[97m｜ 進站中 ｜\033[0m "
 
                 # 有車還沒進站
                 else:
                     minute = stop['estimateTime'] // 60
 
                     if minute < 0:
-                        result += "\033[47m\033[30m[ 未發車 ]\033[0m "
+                        result += "\033[47m\033[30m｜ 未發車 ｜\033[0m "
                     elif minute > 2:
-                        result += '\033[44m\033[97m[ {0:>3} 分 ]\033[0m '.format(
+                        result += '\033[44m\033[97m｜ {0:>3} 分 ｜\033[0m '.format(
                             minute)
                     else:
-                        result += '\033[45m\033[97m[ {0:>3} 分 ]\033[0m '.format(
+                        result += '\033[45m\033[97m｜ {0:>3} 分 ｜\033[0m '.format(
                             minute)
 
             # 分析站名有多寬
