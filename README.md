@@ -2,9 +2,9 @@
 bus tracker for Taiwanese for CLI
 
 ## Demo
-| `bustw Taipei.忠孝幹線 1 1`         | `bustw 52 23 2`          |
-| --------------------------------------- | --------------------------------------- |
-| ![Taipei.忠孝幹線](https://imgur.com/hf22AxL.png) | ![Taipei.52](https://imgur.com/lgTYmQq.png) |
+| `bustw`  | `bustw Taipei.忠孝幹線 1 1` | `bustw Taipei.72 2 2` |
+| :-------------------------------------: | :-------------------------------------: | :-------------------------------------: |
+| ![main](https://imgur.com/H7kKIDj.png) | ![Taipei.忠孝幹線](https://imgur.com/rC6GbP2.png) | ![Taipei.72](https://imgur.com/1PM33zC.png) |
 
 ## Install
 ```bash
