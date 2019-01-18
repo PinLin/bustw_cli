@@ -54,20 +54,24 @@ class ResultView(BaseView):
 
         return result
 
-    def title(self, city: str, route_name: str):
+    def title(self, width: int, city: str, route_name: str):
         result = '\033[0;1m［{0}］{1}\033[0m'.format(city, route_name)
-        return result.center(50, ' ')
+        return result.center(width, ' ')
 
     def display(self, info: dict):
         """顯示查詢結果"""
+
+        width = 54
 
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
 
-        result = self.title(city_name.to_chinese(info['city']), info['name'])
+        chinese_city_name = city_name.to_chinese(info['city'])
+
+        result = self.title(width, chinese_city_name, info['name'])
         result += "\n"
-        result += "—" * 50
+        result += "—" * width
         result += "\n"
 
         for stop in info['stops']:
