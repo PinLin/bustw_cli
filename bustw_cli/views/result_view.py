@@ -20,9 +20,11 @@ class ResultView(BaseView):
         return 'switch'
 
     def process(self, uid, stops, reals, times):
-        result = {}
+        """將取得的資訊整合"""
 
-        result['city'] = self.data['result']['city']
+        result = {
+            'city': self.data['result']['city']
+        }
 
         for sub_route in stops['subRoutes']:
             if sub_route['subRouteUID'] == uid:
@@ -62,6 +64,8 @@ class ResultView(BaseView):
         return result
 
     def display(self, info):
+        """顯示查詢結果"""
+
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
