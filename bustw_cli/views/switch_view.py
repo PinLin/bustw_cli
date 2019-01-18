@@ -8,11 +8,6 @@ from ..utils.database import Database
 
 
 class SwitchView(BaseView):
-    def __init__(self, data: dict):
-        super().__init__(data)
-
-        self.__uid = None
-
     def main(self):
         choice = self.data['choice']
 
@@ -34,12 +29,12 @@ class SwitchView(BaseView):
 
         choice[2] = int(choice[2]) - 1
 
-        self.__uid = stops['subRoutes'][choice[2]]['subRouteUID']
-
         reals = self.download_reals()
         times = self.download_times()
 
-        self.process(stops, reals, times)
+        uid = stops['subRoutes'][choice[2]]['subRouteUID']
+
+        self.process(uid, stops, reals, times)
 
         return 'result'
 
@@ -139,14 +134,14 @@ class SwitchView(BaseView):
 
         return choices.index(answer)
 
-    def process(self, stops, reals, times):
+    def process(self, uid, stops, reals, times):
         self.data['info'] = {}
         info = self.data['info']
 
         info['city'] = self.data['result']['city']
 
         for sub_route in stops['subRoutes']:
-            if sub_route['subRouteUID'] == self.__uid:
+            if sub_route['subRouteUID'] == uid:
                 subRouteName = sub_route['subRouteName']
                 lastStopName = sub_route['stops'][-1]['stopName']
                 info['name'] = subRouteName + "（往" + lastStopName + "）"
