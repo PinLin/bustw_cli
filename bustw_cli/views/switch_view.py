@@ -14,18 +14,34 @@ class SwitchView(BaseView):
         self.__uid = None
 
     def main(self):
+        choice = self.data['choice']
+
         stops = self.download_stops()
 
-        if self.choose(stops):
-            reals = self.download_reals()
-            times = self.download_times()
+        if len(choice) < 3 or not choice[2]:
+            result = self.choose(stops)
 
-            self.process(stops, reals, times)
-            return 'result'
+            try:
+                choice[2] = result
+            except IndexError:
+                choice.append(result)
 
-        self.data['choice'] = self.data['choice'][:1]
+        if not choice[2]:
+            choice[2] = None
+            choice[1] = None
 
-        return 'lookup'
+            return 'lookup'
+
+        choice[2] = int(choice[2]) - 1
+
+        self.__uid = stops['subRoutes'][choice[2]]['subRouteUID']
+
+        reals = self.download_reals()
+        times = self.download_times()
+
+        self.process(stops, reals, times)
+
+        return 'result'
 
     def download_stops(self):
         """下載路線站牌資料"""
@@ -88,14 +104,13 @@ class SwitchView(BaseView):
                 temp.append(route)
         return temp
 
-    def choose(self, stops):
+    def choose(self, stops: dict):
         """選擇要查詢的路線"""
 
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
 
-        choice = self.data['choice']
         result = self.data['result']
 
         choices = list(map(lambda x: '{0}（往{1}）'.format(
@@ -115,26 +130,14 @@ class SwitchView(BaseView):
             }
         ]
 
-        if len(choice) < 3 or not choice[2]:
-            print()
-            try:
-                answer = prompt(questions)['answer']
-            except KeyError:
-                raise KeyboardInterrupt
-            print()
+        print()
+        try:
+            answer = prompt(questions)['answer']
+        except KeyError:
+            raise KeyboardInterrupt
+        print()
 
-            if answer == '  回到主畫面':
-                self.data['result'] = None
-                return False
-
-            try:
-                choice[2] = choices.index(answer)
-            except IndexError:
-                choice.append(choices.index(answer))
-
-        index = int(choice[2]) - 1
-        self.__uid = stops['subRoutes'][index]['subRouteUID']
-        return True
+        return choices.index(answer)
 
     def process(self, stops, reals, times):
         self.data['info'] = {}
