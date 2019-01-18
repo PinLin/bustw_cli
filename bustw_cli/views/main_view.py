@@ -11,7 +11,8 @@ class MainView(BaseView):
     def main(self):
         with Database() as db:
             if not len(db.select_city()):
-                return 'city'
+                from .city_view import CityView
+                CityView().main()
 
         choice = self.data['choice']
 

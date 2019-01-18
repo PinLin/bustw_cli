@@ -16,8 +16,6 @@ class CityView(BaseView):
         self.select_cities()
         self.update_routes()
 
-        return 'main'
-
     def download_cities(self):
         """下載城市資料"""
 
@@ -74,7 +72,8 @@ class CityView(BaseView):
 
         for city in cities:
             if city['status']:
-                print("🌐 正在下載{city}的路線基本資料...".format(city=city['chinese_name']))
+                print("🌐 正在下載{city}的路線基本資料...".format(
+                    city=city['chinese_name']))
                 routes = Bustw().get_info(city['english_name'])['routes']
                 with Database() as db:
                     db.delete_routes(city['english_name'])

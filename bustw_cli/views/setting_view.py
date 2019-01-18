@@ -5,12 +5,18 @@ from PyInquirer import prompt
 
 class SettingView(BaseView):
     def main(self):
-        return self.select_function()
+        select = self.select_function()
+
+        if select == 'CityView':
+            from .city_view import CityView
+            CityView().main()
+
+        return 'main'
 
     def select_function(self):
         functions = {
-            '回到主畫面': 'main',
-            '修改要檢索的城市': 'city',
+            '回到主畫面': 'MainView',
+            '修改要檢索的城市': 'CityView',
         }
 
         questions = [
