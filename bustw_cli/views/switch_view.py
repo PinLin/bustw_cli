@@ -14,35 +14,39 @@ class SwitchView(BaseView):
 
         stops = self.download_stops(result)
 
-        if len(choice) < 3 or not choice[2]:
-            select = self.choose(result, stops)
+        while True:
+            if len(choice) < 3 or not choice[2]:
+                select = self.choose(result, stops)
 
-            try:
-                choice[2] = select
-            except IndexError:
-                choice.append(select)
+                try:
+                    choice[2] = select
+                except IndexError:
+                    choice.append(select)
 
-        if not choice[2]:
+            if not choice[2]:
+                choice[2] = None
+                choice[1] = None
+
+                return 'lookup'
+
+            choice[2] = int(choice[2]) - 1
+
+            reals = self.download_reals(result)
+            times = self.download_times(result)
+
+            uid = stops['subRoutes'][choice[2]]['subRouteUID']
+
+            info = {
+                'uid': uid,
+                'stops': stops,
+                'reals': reals,
+                'times': times,
+            }
+
+            from .result_view import ResultView
+            ResultView().main(info, result)
+
             choice[2] = None
-            choice[1] = None
-
-            return 'lookup'
-
-        choice[2] = int(choice[2]) - 1
-
-        reals = self.download_reals(result)
-        times = self.download_times(result)
-
-        uid = stops['subRoutes'][choice[2]]['subRouteUID']
-
-        self.data['info'] = {
-            'uid': uid,
-            'stops': stops,
-            'reals': reals,
-            'times': times,
-        }
-
-        return 'result'
 
     def download_stops(self, result: dict):
         """下載路線站牌資料"""

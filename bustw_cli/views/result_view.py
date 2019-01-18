@@ -6,16 +6,8 @@ from ..utils.less import print_less
 
 
 class ResultView(BaseView):
-    def main(self):
-        info = self.data['info']
-        choice = self.data['choice']
-        result = self.data['result']
-
+    def main(self, info: dict, result: dict):
         self.display(self.process(info, result))
-
-        choice[2] = None
-
-        return 'switch'
 
     def process(self, info: dict, result: dict):
         """將取得的資訊整合"""
