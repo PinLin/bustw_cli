@@ -11,8 +11,6 @@ class SettingView(BaseView):
             from .city_view import CityView
             CityView().main()
 
-        return 'main'
-
     def select_function(self):
         functions = {
             '回到主畫面': 'MainView',

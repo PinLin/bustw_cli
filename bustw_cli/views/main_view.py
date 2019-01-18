@@ -25,9 +25,13 @@ class MainView(BaseView):
                 choice.append(select)
 
         if not choice[0]:
-            return 'setting'
+            from .setting_view import SettingView
+            SettingView().main()
 
-        return 'lookup'
+            return 'main'
+
+        else:
+            return 'lookup'
 
     def search(self):
         """設定要搜尋的路線"""
