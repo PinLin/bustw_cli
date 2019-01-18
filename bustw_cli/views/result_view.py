@@ -9,22 +9,21 @@ class ResultView(BaseView):
     def main(self):
         info = self.data['info']
         choice = self.data['choice']
+        result = self.data['result']
 
-        result = self.process(
-            info['uid'], info['stops'], info['reals'], info['times'])
-
-        self.display(result)
+        self.display(self.process(info, result))
 
         choice[2] = None
 
         return 'switch'
 
-    def process(self, uid, stops, reals, times):
+    def process(self, info: dict, result: dict):
         """將取得的資訊整合"""
 
-        result = {
-            'city': self.data['result']['city']
-        }
+        uid = info['uid']
+        stops = info['stops']
+        reals = info['reals']
+        times = info['times']
 
         for sub_route in stops['subRoutes']:
             if sub_route['subRouteUID'] == uid:
@@ -35,14 +34,14 @@ class ResultView(BaseView):
 
         temp = {}
         for time in times:
-            if time['routeName'] != self.data['result']['route_name']:
+            if time['routeName'] != result['route_name']:
                 continue
             temp[time['stopUID']] = time
         times = temp
 
         temp = {}
         for real in reals:
-            if real['routeName'] != self.data['result']['route_name']:
+            if real['routeName'] != result['route_name']:
                 continue
             if not temp.get(real['stopUID']):
                 temp[real['stopUID']] = []
@@ -63,7 +62,7 @@ class ResultView(BaseView):
 
         return result
 
-    def display(self, info):
+    def display(self, info: dict):
         """顯示查詢結果"""
 
         with Database() as db:

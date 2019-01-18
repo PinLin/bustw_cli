@@ -10,11 +10,12 @@ from ..utils.database import Database
 class SwitchView(BaseView):
     def main(self):
         choice = self.data['choice']
+        result = self.data['result']
 
-        stops = self.download_stops()
+        stops = self.download_stops(result)
 
         if len(choice) < 3 or not choice[2]:
-            select = self.choose(stops)
+            select = self.choose(result, stops)
 
             try:
                 choice[2] = select
@@ -29,8 +30,8 @@ class SwitchView(BaseView):
 
         choice[2] = int(choice[2]) - 1
 
-        reals = self.download_reals()
-        times = self.download_times()
+        reals = self.download_reals(result)
+        times = self.download_times(result)
 
         uid = stops['subRoutes'][choice[2]]['subRouteUID']
 
@@ -43,14 +44,12 @@ class SwitchView(BaseView):
 
         return 'result'
 
-    def download_stops(self):
+    def download_stops(self, result: dict):
         """下載路線站牌資料"""
 
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
-
-        result = self.data['result']
 
         print()
         print("🌐 正在下載{0}之路線 {1} 的站牌資料...".format(
@@ -62,14 +61,12 @@ class SwitchView(BaseView):
             if route['routeUID'] == result['route_uid']:
                 return route
 
-    def download_reals(self):
+    def download_reals(self, result: dict):
         """下載路線定位資料"""
 
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
-
-        result = self.data['result']
 
         print()
         print("🌐 正在下載{0}之路線 {1} 的定位資料...".format(
@@ -83,14 +80,12 @@ class SwitchView(BaseView):
                 temp.append(route)
         return temp
 
-    def download_times(self):
+    def download_times(self, result: dict):
         """下載路線時間資料"""
 
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
-
-        result = self.data['result']
 
         print()
         print("🌐 正在下載{0}之路線 {1} 的時間資料...".format(
@@ -104,14 +99,12 @@ class SwitchView(BaseView):
                 temp.append(route)
         return temp
 
-    def choose(self, stops: dict):
+    def choose(self, result: dict, stops: dict):
         """選擇要查詢的路線"""
 
         with Database() as db:
             cities = db.select_city()
             city_name = CityName(cities)
-
-        result = self.data['result']
 
         choices = list(map(lambda x: '{0}（往{1}）'.format(
             x['subRouteName'], x['stops'][-1]['stopName']), stops['subRoutes']))
