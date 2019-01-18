@@ -32,7 +32,7 @@ class App:
 
         try:
             # 功能跳轉
-            func = 'init'
+            func = 'main'
             while True:
                 func = self.__views[func](data)
 

@@ -9,6 +9,10 @@ from ..utils.database import Database
 
 class MainView(BaseView):
     def main(self):
+        with Database() as db:
+            if not len(db.select_city()):
+                return 'city'
+
         choice = self.data['choice']
 
         if len(choice) < 1 or not choice[0]:

@@ -3,12 +3,6 @@ from .app import App
 app = App()
 
 
-@app.view('init')
-def init(data):
-    from .views.init_view import InitView
-    return InitView(data).main()
-
-
 @app.view('city')
 def city(data):
     from .views.city_view import CityView
