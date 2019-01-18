@@ -54,6 +54,10 @@ class ResultView(BaseView):
 
         return result
 
+    def title(self, city: str, route_name: str):
+        result = '\033[0;1m［{0}］{1}\033[0m'.format(city, route_name)
+        return result.center(50, ' ')
+
     def display(self, info: dict):
         """顯示查詢結果"""
 
@@ -61,11 +65,14 @@ class ResultView(BaseView):
             cities = db.select_city()
             city_name = CityName(cities)
 
-        result = '\033[0;1m［{0}］{1}\033[0m\n'.format(
-            city_name.to_chinese(info['city']), info['name'])
-        result += "=" * 50 + '\n'
+        result = self.title(city_name.to_chinese(info['city']), info['name'])
+        result += "\n"
+        result += "—" * 50
+        result += "\n"
 
         for stop in info['stops']:
+            result += "  "
+
             # 未發車
             if stop['stopStatus'] == 1:
                 result += "\033[47m\033[30m[ 未發車 ]\033[0m "
