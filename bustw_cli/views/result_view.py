@@ -56,12 +56,12 @@ class ResultView(BaseView):
 
     def title(self, width: int, city: str, route_name: str):
         result = '\033[0;1m［{0}］{1}\033[0m'.format(city, route_name)
-        return result.center(width, ' ')
+        return result.center(width - 6, ' ')
 
     def display(self, info: dict):
         """顯示查詢結果"""
 
-        width = 54
+        width = 52
 
         with Database() as db:
             cities = db.select_city()
