@@ -1,11 +1,9 @@
 import sys
-import readline
 
 
 class App:
     def __init__(self):
         self.__views = {}
-        readline.parse_and_bind("tab: complete")
 
     def view(self, name: str):
         """註冊顯示介面"""
