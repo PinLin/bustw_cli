@@ -8,7 +8,17 @@ def ask(text: str='') -> str:
 
     if text:
         print('\033[0;1m{}\033[0m'.format(text))
-    select = input(' ❯ ')
+
+    try:
+        select = input(' ❯ ')
+
+    except KeyboardInterrupt as e:
+        print()
+        print()
+        print("Cancelled by user")
+        print()
+
+        raise e
 
     if select == 'exit':
         raise EOFError
