@@ -7,11 +7,59 @@ from ..utils.less import print_less
 
 class ResultView(BaseView):
     def main(self):
-        self.display(self.data['info'])
+        info = self.data['info']
+        choice = self.data['choice']
 
-        self.data['choice'] = self.data['choice'][:2]
+        result = self.process(
+            info['uid'], info['stops'], info['reals'], info['times'])
+
+        self.display(result)
+
+        choice[2] = None
 
         return 'switch'
+
+    def process(self, uid, stops, reals, times):
+        result = {}
+
+        result['city'] = self.data['result']['city']
+
+        for sub_route in stops['subRoutes']:
+            if sub_route['subRouteUID'] == uid:
+                subRouteName = sub_route['subRouteName']
+                lastStopName = sub_route['stops'][-1]['stopName']
+                result['name'] = subRouteName + "（往" + lastStopName + "）"
+                result['stops'] = sub_route['stops'].copy()
+
+        temp = {}
+        for time in times:
+            if time['routeName'] != self.data['result']['route_name']:
+                continue
+            temp[time['stopUID']] = time
+        times = temp
+
+        temp = {}
+        for real in reals:
+            if real['routeName'] != self.data['result']['route_name']:
+                continue
+            if not temp.get(real['stopUID']):
+                temp[real['stopUID']] = []
+            temp[real['stopUID']].append({
+                'arriving': real['arriving'],
+                'busNumber': real['busNumber'],
+                'busStatus': real['busStatus'],
+            })
+        reals = temp
+
+        for stop in result['stops']:
+            time = times[stop['stopUID']]
+            stop['estimateTime'] = time['estimateTime']
+            stop['stopStatus'] = time['stopStatus']
+
+            real = reals.get(stop['stopUID']) or []
+            stop['buses'] = real
+
+        return result
 
     def display(self, info):
         with Database() as db:

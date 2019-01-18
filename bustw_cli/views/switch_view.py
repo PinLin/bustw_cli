@@ -34,7 +34,12 @@ class SwitchView(BaseView):
 
         uid = stops['subRoutes'][choice[2]]['subRouteUID']
 
-        self.process(uid, stops, reals, times)
+        self.data['info'] = {
+            'uid': uid,
+            'stops': stops,
+            'reals': reals,
+            'times': times,
+        }
 
         return 'result'
 
@@ -133,44 +138,3 @@ class SwitchView(BaseView):
         print()
 
         return choices.index(answer)
-
-    def process(self, uid, stops, reals, times):
-        self.data['info'] = {}
-        info = self.data['info']
-
-        info['city'] = self.data['result']['city']
-
-        for sub_route in stops['subRoutes']:
-            if sub_route['subRouteUID'] == uid:
-                subRouteName = sub_route['subRouteName']
-                lastStopName = sub_route['stops'][-1]['stopName']
-                info['name'] = subRouteName + "（往" + lastStopName + "）"
-                info['stops'] = sub_route['stops'].copy()
-
-        temp = {}
-        for time in times:
-            if time['routeName'] != self.data['result']['route_name']:
-                continue
-            temp[time['stopUID']] = time
-        times = temp
-
-        temp = {}
-        for real in reals:
-            if real['routeName'] != self.data['result']['route_name']:
-                continue
-            if not temp.get(real['stopUID']):
-                temp[real['stopUID']] = []
-            temp[real['stopUID']].append({
-                'arriving': real['arriving'],
-                'busNumber': real['busNumber'],
-                'busStatus': real['busStatus'],
-            })
-        reals = temp
-
-        for stop in info['stops']:
-            time = times[stop['stopUID']]
-            stop['estimateTime'] = time['estimateTime']
-            stop['stopStatus'] = time['stopStatus']
-
-            real = reals.get(stop['stopUID']) or []
-            stop['buses'] = real
