@@ -92,7 +92,9 @@ class ResultView(BaseView):
                 else:
                     minute = stop['estimateTime'] // 60
 
-                    if minute > 2:
+                    if minute < 0:
+                        result += "\033[47m\033[30m[ 未發車 ]\033[0m "
+                    elif minute > 2:
                         result += '\033[44m\033[97m[ {0:>3} 分 ]\033[0m '.format(
                             minute)
                     else:
