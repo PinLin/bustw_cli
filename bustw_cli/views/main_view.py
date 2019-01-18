@@ -16,12 +16,12 @@ class MainView(BaseView):
         choice = self.data['choice']
 
         if len(choice) < 1 or not choice[0]:
-            result = self.search()
+            select = self.search()
 
             try:
-                choice[0] = result
+                choice[0] = select
             except IndexError:
-                choice.append(result)
+                choice.append(select)
 
         if not choice[0]:
             return 'setting'

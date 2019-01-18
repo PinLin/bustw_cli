@@ -18,12 +18,12 @@ class LookupView(BaseView):
             return 'main'
 
         if len(choice) < 2 or not choice[1]:
-            result = self.choose(routes)
+            select = self.choose(routes)
 
             try:
-                choice[1] = result
+                choice[1] = select
             except IndexError:
-                choice.append(result)
+                choice.append(select)
 
         if not choice[1]:
             choice[1] = None

@@ -14,12 +14,12 @@ class SwitchView(BaseView):
         stops = self.download_stops()
 
         if len(choice) < 3 or not choice[2]:
-            result = self.choose(stops)
+            select = self.choose(stops)
 
             try:
-                choice[2] = result
+                choice[2] = select
             except IndexError:
-                choice.append(result)
+                choice.append(select)
 
         if not choice[2]:
             choice[2] = None
