@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 
 import sys
-from pip._internal import main as pip_main
+
+try:
+    from pip._internal import main as pip_main
+
+except:
+    from pip import main as pip_main
 
 try:
     with open(sys.path[0] + '/requirements.txt') as f:
