@@ -6,32 +6,28 @@ REPO_URL="https://github.com/PinLin/bustw_cli"
 
 
 main() {
+    REPO_NAME=$(echo $REPO_URL | rev | cut -d '/' -f 1 | rev)
+
     # Remove old one
     if [ -d ~/.$COMMAND ]
     then
         rm -rf ~/.$COMMAND
     fi
-    
+
     # Clone repo to local
     if command -v wget > /dev/null
     then
-        wget -O /tmp/$COMMAND-$VERSION.zip $REPO_URL/archive/v$VERSION.zip
+        wget -O /tmp/$REPO_NAME-$VERSION.zip $REPO_URL/archive/v$VERSION.zip
     else
-        curl -o /tmp/$COMMAND-$VERSION.zip -L $REPO_URL/archive/v$VERSION.zip
+        curl -o /tmp/$REPO_NAME-$VERSION.zip -L $REPO_URL/archive/v$VERSION.zip
     fi
     if [ $? != 0 ]
     then
-        echo "Failed to download $COMMAND."
+        echo "Failed to download $REPO_NAME."
         return 1
     fi
-    unzip /tmp/$COMMAND-$VERSION.zip -d ~
-    mv ~/$COMMAND-$VERSION ~/.$COMMAND
-
-    # Create execute file
-    mkdir ~/.$COMMAND/dist
-    cd ~/.$COMMAND/dist
-    sed "s={{path}}=~/.$COMMAND=g" ~/.$COMMAND/$COMMAND.sh > $COMMAND
-    chmod +x $COMMAND
+    unzip /tmp/$REPO_NAME-$VERSION.zip -d ~
+    mv ~/$REPO_NAME-$VERSION ~/.$COMMAND
 
     # Create alias
     if ! command -v ${COMMAND} > /dev/null; then
@@ -43,7 +39,7 @@ main() {
             fi
         done
     fi
-    
+
     # Finished
     echo
     echo Done! $COMMAND was installed.
