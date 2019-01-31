@@ -13,10 +13,10 @@ bus tracker for Taiwanese for CLI
 ## Install
 ```bash
 # Install by `curl`
-sh -c "$(curl -L https://raw.githubusercontent.com/PinLin/bustw_cli/master/install.sh)"
+sh -c "$(curl -L https://raw.githubusercontent.com/PinLin/bustw_cli/v2.1/install.sh)"
 
 # Install by `wget`
-sh -c "$(wget -O- https://raw.githubusercontent.com/PinLin/bustw_cli/master/install.sh)"
+sh -c "$(wget -O- https://raw.githubusercontent.com/PinLin/bustw_cli/v2.1/install.sh)"
 ```
 
 ## License
