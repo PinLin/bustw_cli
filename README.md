@@ -14,10 +14,10 @@ bus tracker for Taiwanese for CLI
 1. Install bustw_cli.
 ```bash
 # by `curl`
-sh -c "$(curl -L https://raw.githubusercontent.com/PinLin/bustw_cli/v2.1/install.sh)"
+sh -c "$(curl -L https://raw.githubusercontent.com/PinLin/bustw_cli/v2.2/install.sh)"
 
 # by `wget`
-sh -c "$(wget -O- https://raw.githubusercontent.com/PinLin/bustw_cli/v2.1/install.sh)"
+sh -c "$(wget -O- https://raw.githubusercontent.com/PinLin/bustw_cli/v2.2/install.sh)"
 ```
 
 2. Install dependencies.
