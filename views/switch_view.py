@@ -1,10 +1,9 @@
-from .base_view import BaseView
-
 from PyInquirer import prompt
 
-from ..utils.bustw import Bustw
-from ..utils.city_name import CityName
-from ..utils.database import Database
+from utils.bustw import Bustw
+from utils.city_name import CityName
+from utils.database import Database
+from views.base_view import BaseView
 
 
 class SwitchView(BaseView):

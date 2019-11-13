@@ -1,8 +1,7 @@
-from .base_view import BaseView
-
-from ..utils.city_name import CityName
-from ..utils.database import Database
-from ..utils.less import print_less
+from utils.city_name import CityName
+from utils.database import Database
+from utils.less import print_less
+from views.base_view import BaseView
 
 
 class ResultView(BaseView):

@@ -1,10 +1,9 @@
-from .base_view import BaseView
-
 import readline
 
-from ..utils.ask import ask
-from ..utils.city_name import CityName
-from ..utils.database import Database
+from utils.ask import ask
+from utils.city_name import CityName
+from utils.database import Database
+from views.base_view import BaseView
 
 
 class MainView(BaseView):

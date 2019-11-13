@@ -1,6 +1,6 @@
-from .base_view import BaseView
-
 from PyInquirer import prompt
+
+from views.base_view import BaseView
 
 
 class SettingView(BaseView):

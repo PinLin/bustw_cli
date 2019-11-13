@@ -1,9 +1,8 @@
-from .base_view import BaseView
-
 from PyInquirer import prompt
 
-from ..utils.city_name import CityName
-from ..utils.database import Database
+from utils.city_name import CityName
+from utils.database import Database
+from views.base_view import BaseView
 
 
 class LookupView(BaseView):
