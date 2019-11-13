@@ -4,7 +4,7 @@ import sqlite3
 
 class Database:
     def __init__(self):
-        self.__db = sqlite3.connect(sys.path[0] + '/db/bustw.db')
+        self.__db = sqlite3.connect(sys.path[0] + '/data.db')
 
         self.init()
 
