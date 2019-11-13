@@ -10,21 +10,6 @@ bus tracker for Taiwanese for CLI
 | :-------------------------------------: | :-------------------------------------: |
 | ![Taipei.忠孝幹線](https://imgur.com/rC6GbP2.png) | ![Taipei.72](https://imgur.com/1PM33zC.png) |
 
-## Install
-1. Install bustw_cli.
-```bash
-# by `curl`
-sh -c "$(curl -L https://raw.githubusercontent.com/PinLin/bustw_cli/v2.2/install.sh)"
-
-# by `wget`
-sh -c "$(wget -O- https://raw.githubusercontent.com/PinLin/bustw_cli/v2.2/install.sh)"
-```
-
-2. Install dependencies.
-```bash
-pip3 install -r $HOME/.bustw/requirements.txt
-```
-
 ## License
 MIT License
 
