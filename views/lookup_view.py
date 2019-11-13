@@ -3,6 +3,7 @@ from PyInquirer import prompt
 from utils.city_name import CityName
 from utils.database import Database
 from views.base_view import BaseView
+from views.switch_view import SwitchView
 
 
 class LookupView(BaseView):
@@ -32,7 +33,6 @@ class LookupView(BaseView):
 
             result = routes[choice[1]]
 
-            from .switch_view import SwitchView
             SwitchView().main(choice, result)
 
             choice[1] = None

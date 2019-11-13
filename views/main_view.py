@@ -4,13 +4,15 @@ from utils.ask import ask
 from utils.city_name import CityName
 from utils.database import Database
 from views.base_view import BaseView
+from views.city_view import CityView
+from views.lookup_view import LookupView
+from views.setting_view import SettingView
 
 
 class MainView(BaseView):
     def main(self, choice: list):
         with Database() as db:
             if not len(db.select_city()):
-                from .city_view import CityView
                 CityView().main()
 
         while True:
@@ -23,12 +25,10 @@ class MainView(BaseView):
                     choice.append(select)
 
             if not choice[0]:
-                from .setting_view import SettingView
                 SettingView().main()
 
                 continue
 
-            from .lookup_view import LookupView
             LookupView().main(choice)
 
             choice[0] = None

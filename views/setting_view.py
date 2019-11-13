@@ -1,6 +1,7 @@
 from PyInquirer import prompt
 
 from views.base_view import BaseView
+from views.city_view import CityView
 
 
 class SettingView(BaseView):
@@ -8,7 +9,6 @@ class SettingView(BaseView):
         select = self.select_function()
 
         if select == 'CityView':
-            from .city_view import CityView
             CityView().main()
 
     def select_function(self):

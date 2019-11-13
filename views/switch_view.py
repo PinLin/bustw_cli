@@ -4,6 +4,7 @@ from utils.bustw import Bustw
 from utils.city_name import CityName
 from utils.database import Database
 from views.base_view import BaseView
+from views.result_view import ResultView
 
 
 class SwitchView(BaseView):
@@ -33,7 +34,6 @@ class SwitchView(BaseView):
                 'uid': stops['subRoutes'][choice[2]]['subRouteUID'],
             }
 
-            from .result_view import ResultView
             ResultView().main(info, result)
 
             choice[2] = None
