@@ -7,7 +7,7 @@ def ask(text: str = '') -> str:
     readline.parse_and_bind("tab: complete")
 
     if text:
-        print('\033[0;1m{}\033[0m'.format(text))
+        print(f'\033[0;1m{text}\033[0m')
 
     try:
         select = input(' ❯ ')
