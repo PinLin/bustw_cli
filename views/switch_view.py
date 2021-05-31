@@ -1,7 +1,7 @@
 from PyInquirer import prompt
 
 from utils.bustw import Bustw
-from utils.city_name import CityName
+from utils.city import City
 from utils.database import Database
 from views.base_view import BaseView
 from views.result_view import ResultView
@@ -41,12 +41,9 @@ class SwitchView(BaseView):
     def download_stops(self, result: dict):
         """下載路線站牌資料"""
 
-        with Database() as db:
-            city_name = CityName()
-
         print()
         print("🌐 正在下載{0}之路線 {1} 的站牌資料...".format(
-            city_name.translate(result['city']),
+            City().translate(result['city']),
             result['route_name']))
         data = Bustw().get_stop(result['city'], result['route_name'])['routes']
 
@@ -57,12 +54,9 @@ class SwitchView(BaseView):
     def download_reals(self, result: dict):
         """下載路線定位資料"""
 
-        with Database() as db:
-            city_name = CityName()
-
         print()
         print("🌐 正在下載{0}之路線 {1} 的定位資料...".format(
-            city_name.translate(result['city']),
+            City().translate(result['city']),
             result['route_name']))
         data = Bustw().get_real(result['city'], result['route_name'])['buses']
 
@@ -75,12 +69,9 @@ class SwitchView(BaseView):
     def download_times(self, result: dict):
         """下載路線時間資料"""
 
-        with Database() as db:
-            city_name = CityName()
-
         print()
         print("🌐 正在下載{0}之路線 {1} 的時間資料...".format(
-            city_name.translate(result['city']),
+            City().translate(result['city']),
             result['route_name']))
         data = Bustw().get_time(result['city'], result['route_name'])['stops']
 
@@ -93,9 +84,6 @@ class SwitchView(BaseView):
     def choose(self, result: dict, stops: dict):
         """選擇要查詢的路線"""
 
-        with Database() as db:
-            city_name = CityName()
-
         choices = list(map(lambda x: '{0}（往{1}）'.format(
             x['subRouteName'], x['stops'][-1]['stopName']), stops['subRoutes']))
 
@@ -107,7 +95,7 @@ class SwitchView(BaseView):
                 'qmark': '🛣 ',
                 'name': 'answer',
                 'message': '請選擇要查看的［{0}］{1} 之子路線\n'.format(
-                    city_name.translate(result['city']),
+                    City().translate(result['city']),
                     result['route_name']),
                 'choices': choices
             }

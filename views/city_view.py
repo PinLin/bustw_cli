@@ -1,7 +1,7 @@
 from PyInquirer import prompt
 
 from utils.bustw import Bustw
-from utils.city_name import CityName
+from utils.city import City
 from utils.database import Database
 from views.base_view import BaseView
 
@@ -19,7 +19,7 @@ class CityView(BaseView):
         """初始化資料庫"""
 
         with Database() as db:
-            for key, value in CityName().cities.items():
+            for key, value in City().cities.items():
                 db.insert_city({
                     'english_name': key,
                     'chinese_name': value,
@@ -31,7 +31,6 @@ class CityView(BaseView):
 
         with Database() as db:
             cities = db.select_city()
-            city_name = CityName()
 
         questions = [
             {

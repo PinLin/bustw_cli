@@ -1,4 +1,4 @@
-from utils.city_name import CityName
+from utils.city import City
 from utils.database import Database
 from utils.less import print_by_less
 from views.base_view import BaseView
@@ -62,10 +62,7 @@ class ResultView(BaseView):
 
         width = 52
 
-        with Database() as db:
-            city_name = CityName()
-
-        chinese_city_name = city_name.translate(info['city'])
+        chinese_city_name = City().translate(info['city'])
 
         result = self.title(width, chinese_city_name, info['name'])
         result += "\n"

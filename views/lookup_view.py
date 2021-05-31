@@ -1,6 +1,6 @@
 from PyInquirer import prompt
 
-from utils.city_name import CityName
+from utils.city import City
 from utils.database import Database
 from views.base_view import BaseView
 from views.switch_view import SwitchView
@@ -48,11 +48,8 @@ class LookupView(BaseView):
     def choose(self, routes: list):
         """選擇要查詢的路線"""
 
-        with Database() as db:
-            city_name = CityName()
-
         choices = list(map(lambda x: '［{0}］{1}'.format(
-            city_name.translate(x['city']), x['route_name']), routes))
+            City().translate(x['city']), x['route_name']), routes))
 
         choices.insert(0, '  回到主畫面')
 

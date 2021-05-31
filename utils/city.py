@@ -1,4 +1,4 @@
-class CityName:
+class City:
     def __init__(self):
         self.cities = {
             "Keelung": "基隆市",
