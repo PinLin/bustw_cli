@@ -64,15 +64,11 @@ class Database:
         cursor.execute('UPDATE city SET status=? WHERE english_name=?',
                        [status, english_name])
 
-    def select_route(self, route_name: str, city: str='') -> list:
+    def select_route(self, route_name: str) -> list:
         cursor = self.__db.cursor()
 
-        if city:
-            cursor.execute('SELECT * FROM route WHERE route_name LIKE ? AND city = ?',
-                           ['%' + route_name + '%', city])
-        else:
-            cursor.execute('SELECT * FROM route WHERE route_name LIKE ?',
-                           ['%' + route_name + '%'])
+        cursor.execute('SELECT * FROM route WHERE route_name LIKE ?',
+                       ['%' + route_name + '%'])
 
         def to_dict(data: list) -> dict:
             return {

@@ -41,19 +41,7 @@ class LookupView(BaseView):
         """取得資料庫中名稱符合的路線"""
 
         with Database() as db:
-            cities = db.select_city()
-            city_name = CityName(cities)
-
-            if '.' in route_name:
-                city, select = route_name.split('.')
-
-                if city in city_name.chinese:
-                    city = city_name.to_english(city)
-
-                routes = db.select_route(select, city)
-
-            else:
-                routes = db.select_route(route_name)
+            routes = db.select_route(route_name)
 
         return routes
 
@@ -61,11 +49,10 @@ class LookupView(BaseView):
         """選擇要查詢的路線"""
 
         with Database() as db:
-            cities = db.select_city()
-            city_name = CityName(cities)
+            city_name = CityName()
 
         choices = list(map(lambda x: '［{0}］{1}'.format(
-            city_name.to_chinese(x['city']), x['route_name']), routes))
+            city_name.translate(x['city']), x['route_name']), routes))
 
         choices.insert(0, '  回到主畫面')
 

@@ -10,22 +10,19 @@ class CityView(BaseView):
     def main(self):
         with Database() as db:
             if not len(db.select_city()):
-                self.download_cities()
+                self.initialize_database()
 
         self.select_cities()
         self.update_routes()
 
-    def download_cities(self):
-        """下載城市資料"""
-
-        print("🌐 正在下載城市清單...")
-        cities = Bustw().get_city()['cities']
+    def initialize_database(self):
+        """初始化資料庫"""
 
         with Database() as db:
-            for city in cities:
+            for key, value in CityName().cities.items():
                 db.insert_city({
-                    'english_name': city['key'],
-                    'chinese_name': city['name'],
+                    'english_name': key,
+                    'chinese_name': value,
                     'status': 0,
                 })
 
@@ -34,7 +31,7 @@ class CityView(BaseView):
 
         with Database() as db:
             cities = db.select_city()
-            city_name = CityName(cities)
+            city_name = CityName()
 
         questions = [
             {
@@ -45,6 +42,7 @@ class CityView(BaseView):
                 'choices': [
                     {
                         'name': city['chinese_name'],
+                        'value': city['english_name'],
                         'checked': city['status']
                     } for city in cities
                 ]
@@ -59,9 +57,8 @@ class CityView(BaseView):
         print()
 
         with Database() as db:
-            for chinese_name in city_name.chinese:
-                english_name = city_name.to_english(chinese_name)
-                db.update_city(english_name, chinese_name in answer)
+            for english_name in answer:
+                db.update_city(english_name, english_name in answer)
 
     def update_routes(self):
         """更新路線基本資料"""

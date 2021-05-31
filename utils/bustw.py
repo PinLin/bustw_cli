@@ -11,10 +11,6 @@ class Bustw:
 
         return requests.get(url).json()
 
-    def get_city(self):
-        """從伺服器取得城市資料"""
-        return self.__get('/city')
-
     def get_info(self, city: str, route: str=''):
         """從伺服器取得路線基本資料"""
         return self.__get('/info/{city}/{route}', city=city, route=route)

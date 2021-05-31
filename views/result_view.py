@@ -63,10 +63,9 @@ class ResultView(BaseView):
         width = 52
 
         with Database() as db:
-            cities = db.select_city()
-            city_name = CityName(cities)
+            city_name = CityName()
 
-        chinese_city_name = city_name.to_chinese(info['city'])
+        chinese_city_name = city_name.translate(info['city'])
 
         result = self.title(width, chinese_city_name, info['name'])
         result += "\n"
