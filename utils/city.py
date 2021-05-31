@@ -1,6 +1,7 @@
 class City:
     def __init__(self):
         self.cities = {
+            "InterCity": "公路客運",
             "Keelung": "基隆市",
             "NewTaipei": "新北市",
             "Taipei": "台北市",
@@ -23,7 +24,6 @@ class City:
             "PenghuCounty": "澎湖縣",
             "KinmenCounty": "金門縣",
             "LienchiangCounty": "連江縣",
-            "InterCity": "公路客運",
         }
 
     @property
