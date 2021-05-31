@@ -3,7 +3,7 @@ import requests
 
 class Bustw:
     def __init__(self):
-        self.__base = 'https://bus.ntut.com.tw/v1'
+        self.__base = 'http://localhost:5000'
 
     def __get(self, resource: str, **kwargs):
         url = self.__base + resource + '?ver=3'
